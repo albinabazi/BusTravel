@@ -1,0 +1,62 @@
+-- tabela addesatUserave 
+do permbaj nje adres te nje userit
+nje user mund te ket vetem nje adres
+nje adres do i takoj vetem nje userit
+tek tabela e addresatUserve do te ruajm te gjitha adresat e te gjith usereve
+
+--tabela users
+do te ruajm te gjit userat
+        *tabela users do permbaj nje fk te adreses per te indentifikuar adresen a atij useri
+
+--tabela numratETelefonave 
+do te permbaj te gjith numrat e telefonave te userave dhe te agjensioneve 
+nje user mund te ket me shum se nje numer te telefonit
+nje numer i telefonit do ti takjo vetem nje useri
+        *tabela numratETelefonave do permbaj nje fk te userit per te indentifikuar numrin e telefonit te atij 
+        *nese atributi perAgjension eshte false numri i takon vetem userit ndersa nese eshte true numri i takon vetem agjensionit
+
+--tabela rolet 
+do te permbaj te gjiha rolet qe ekzistojn ne kompanin ton 
+
+--tabela users_rolet 
+do te bej lidhjen mes nje roli dhe nje useri
+nje user mund te ket shum rolet
+nje rol mund te ju takoj shum userave
+
+--tabela adresatAgjensioneve
+do te permaj addreat e agjensioneve 
+nje adres do ti takoj vetem nje agjensionit
+nje agjension mund te ket shum adresat
+
+
+--tabela agjensioneve
+do te permbaj agjensionet e regjistruara tek ne nje agjension duhet ti takoj nje useri te verifikuar
+nje agjension do i takoj vetem nje useri 
+nje user mund te ket shum agjensione
+
+--tabela autobusat
+do te permabj te gjith autobusat qe i takojn nje agjensionit
+nje autobus do ti takoj vetem nje agjensioni
+nje agjension mund te ket shum autobusat
+
+--tabela linjat 
+do te permbaj te gjitha linjat qe ka publikuar nje agjension
+nje linje do ti takoj nje autobusi 
+nje autobus mudnd te ket shum linja 
+nje linje do te ket dhe nje ndihmesShofer i cili mund ti shoh biletat e blera te asaj linje dhe tedhenat publike te konsumatoreve
+nje linje do ket nje userID(ndihmesShofer)
+nje ndihmesShofer do mund te ket shum linja
+
+
+--tabela biletat
+do te permbaj bileten kur nje user blen per nje linje
+nje bilet do ti takoj vetem nje linje 
+nje linj mund te ket shum biletat
+nj bilet do ti takoj vetem nje useri 
+nje user mund te ket shum bileta
+
+-- tabela statusiBiletave
+do eprmbaj statuest e biletave (aktiv, realizuar, anuluar etj)
+nje bilet mund te ket nje status 
+nje status mund te ju takoj shum biletave
+

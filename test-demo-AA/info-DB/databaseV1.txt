@@ -1,0 +1,169 @@
+drop database bustravelVersion1;
+
+create database bustravelVersion1;
+
+use bustravelVersion1;
+
+create table users (
+	id int primary key not null auto_increment,
+    emri varchar(50) not null,
+    mbiemri varchar(50) not null,
+    email varchar(255) not null,
+    pasword varchar(255) not null,
+    verifikuar boolean default false,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    updated_by int,
+    deletet_at timestamp default null,
+    deletet_by int
+);
+
+create table adresatUserave (
+	id int primary key not null auto_increment,
+	shteti varchar(255) not null,
+    qyteti varchar(255) not null,
+    zipcode varchar(15) not null,
+    rruga varchar(255),
+    user_id int not null,
+    foreign key (userId) references users(id),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_by INT,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    updated_by INT,
+    deleted_at TIMESTAMP,
+    deleted_by INT
+);
+
+create table rolet (
+	id int primary key not null auto_increment,
+    name varchar(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_by INT,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    updated_by INT,
+    deleted_at TIMESTAMP,
+    deleted_by INT
+);
+
+create table users_rolet (
+	id int primary key not null auto_increment,
+    userId int not null,
+    roliId int not null default 1,
+    foreign key (userId) references users(id),
+    foreign key (roliId) references rolet(id),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_by INT,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    updated_by INT,
+    deleted_at TIMESTAMP,
+    deleted_by INT
+);
+
+create table agjensionet(
+	id int primary key not null auto_increment,
+    emri varchar(255) not null,
+    verifikuar boolean,
+    userId int not null,
+    foreign key (userId) references users(id),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_by INT,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    updated_by INT,
+    deleted_at TIMESTAMP,
+    deleted_by INT
+);
+
+create table numratETelefonave(
+	id int primary key not null auto_increment,
+    numri varchar(25) not null,
+    perAgjension boolean not null default false,
+    userId int not null,
+    agjensionet_id INT,
+    foreign key (userId) references users(id),
+    FOREIGN KEY (agjensionet_id) REFERENCES agjensionet(id),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_by INT,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    updated_by INT,
+    deleted_at TIMESTAMP,
+    deleted_by INT
+);
+
+create table adresatAgjensioneve (
+	id int primary key not null auto_increment,
+	shteti varchar(255) not null,
+    qyteti varchar(255) not null,
+    zipcode varchar(15) not null,
+    rruga varchar(255),
+    agjensioniId int,
+    foreign key (agjensioniId) references agjensionet(id),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_by INT,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    updated_by INT,
+    deleted_at TIMESTAMP,
+    deleted_by INT
+);
+    
+create table autobusat(
+	id int primary key not null auto_increment,
+    numri varchar(4) not null,
+    numriUlseve int not null,
+    agjensionId int not null,
+    foreign key (agjensionId) references agjensionet(id),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_by INT,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    updated_by INT,
+    deleted_at TIMESTAMP,
+    deleted_by INT
+);
+
+create table linjat(
+	id int primary key not null auto_increment,
+    vendiNisjes varchar(255) not null,
+    stacioniNisjes varchar(255),
+    vandiZbritjes varchar(255) not null,
+    stacioniZbritjes varchar(255),
+    dataENisjes datetime not null, 
+    dataEArritjes datetime,
+    cmimi double,
+    userId int,
+    autobusID int not null,
+    foreign key (userId) references users(id),
+    foreign key (autobusID) references autobusat(id),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_by INT,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    updated_by INT,
+    deleted_at TIMESTAMP,
+    deleted_by INT
+);
+
+create table statusiBiletave(
+	id int primary key not null auto_increment,
+    statusi varchar(255),
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_by INT,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    updated_by INT,
+    deleted_at TIMESTAMP,
+    deleted_by INT
+);
+
+create table biletat (
+	id int primary key not null auto_increment,
+	dataEBlerjes datetime not null,
+    njoftimiIBlerjes boolean default true,
+    userId int not null,
+    linjaId int not null,
+    statusiId int not null,
+    foreign key (userId) references users(id),
+    foreign key (linjaId) references linjat(id),
+    foreign key (statusiId) references statusiBiletave(id),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_by INT,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    updated_by INT,
+    deleted_at TIMESTAMP,
+    deleted_by INT
+);
