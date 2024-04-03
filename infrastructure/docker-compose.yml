@@ -1,0 +1,65 @@
+version: "2.3"
+
+services:
+  btpostgres:
+    image: postgres:16.2
+    container_name: btpostgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - btpostgres:/var/lib/postgresql
+      - btpostgres-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    # command: postgres -c "listen_addresses='*'"
+    restart: always
+
+  btpgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: btpgadmin
+    ports:
+      - "85:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: bustravel@bustravel.com
+      PGADMIN_DEFAULT_PASSWORD: bustravel
+    volumes:
+      - btpgadmin:/var/lib/pgadmin
+    restart: always
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:24.0.1
+    container_name: keycloak
+    environment:
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://btpostgres:5432/keycloak
+      KC_DB_USERNAME: postgres
+      KC_DB_PASSWORD: root
+
+      KC_HOSTNAME: localhost
+      KC_HOSTNAME_PORT: 8080
+      KC_HOSTNAME_STRICT: false
+      KC_HOSTNAME_STRICT_HTTPS: false
+
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    command: start-dev
+    ports:
+      - "8080:8080"
+    restart: always
+
+volumes:
+  btpostgres:
+    external:
+      true
+  btpostgres-data:
+    external:
+      true
+  btpgadmin:
+    external:
+      true
+
+networks:
+  default:
+    external: true
+    name: bustravel
