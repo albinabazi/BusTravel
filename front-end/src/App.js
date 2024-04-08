@@ -12,6 +12,7 @@ import Feedback from './components/Feedback';
 import AllFeedbacks from './components/AllFeedbacks';
 import AddFeedback from './components/AddFeedback';
 import EditFeedback from './components/EditFeedback';
+import PaymentMethods from './components/PaymentMethods';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
                     <Route path="/Feedback" element={Feedback} />
                     <Route path="/editFeedback/:id" element={EditFeedback} /> 
                     <Route path="/AllFeedbacks" element={AllFeedbacks} />  
+                    <Route path="/paymentMethods" element={<PaymentMethods/>} />  
                 </Routes>
                 <Footer />
             </Router>
