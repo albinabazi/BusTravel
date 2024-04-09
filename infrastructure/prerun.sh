@@ -9,7 +9,6 @@
 
 # Create external volumes
 docker volume create --name btpostgres
-docker volume create --name btpostgres
 docker volume create --name btpostgres-data
 docker volume create --name btpgadmin
 
