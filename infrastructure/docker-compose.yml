@@ -8,11 +8,9 @@ services:
       - "5432:5432"
     volumes:
       - btpostgres:/var/lib/postgresql
-      - btpostgres-data:/var/lib/postgresql/data
     environment:
       - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=digitalschool
-    # command: postgres -c "listen_addresses='*'"
+      - POSTGRES_PASSWORD=bustravel
     restart: always
 
   btpgadmin:
@@ -21,8 +19,8 @@ services:
     ports:
       - "85:80"
     environment:
-      PGADMIN_DEFAULT_EMAIL: qendrim@zerogravitysolutions.org
-      PGADMIN_DEFAULT_PASSWORD: zerogravity
+      PGADMIN_DEFAULT_EMAIL: postgres@postgres.com
+      PGADMIN_DEFAULT_PASSWORD: postgres
     volumes:
       - btpgadmin:/var/lib/pgadmin
     restart: always
@@ -34,7 +32,7 @@ services:
       KC_DB: postgres
       KC_DB_URL: jdbc:postgresql://btpostgres:5432/keycloak
       KC_DB_USERNAME: postgres
-      KC_DB_PASSWORD: digitalschool
+      KC_DB_PASSWORD: bustravel
 
       KC_HOSTNAME: localhost
       KC_HOSTNAME_PORT: 8080
@@ -52,14 +50,11 @@ volumes:
   btpostgres:
     external:
       true
-  btpostgres-data:
-    external:
-      true
   btpgadmin:
     external:
       true
 
 networks:
   default:
-    external: true
-    name: bustravel
+    external:
+      name: bustravel

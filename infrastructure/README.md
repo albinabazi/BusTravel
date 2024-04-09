@@ -27,9 +27,15 @@ To set up the Bus Travel infrastructure, follow these steps:
 
 3. Run the `prerun.sh` script to create the required external volumes and network:
 
+   per mmentin bone veq qeto 3 a edhe krijone 2 tatabaza nje keycloak edhe nje bustravel
+
+    docker volume create btpostgres
+    docker volume create btpgadmin 
+    docker-compose up -d           
+
    ```bash
    ./prerun.sh
-   ```
+   ``` 
 
 4. Run Docker Compose to start the services:
 
