@@ -16,7 +16,7 @@ const Header = ({ username, onLogout }) => {
                 </Link>
             </div>
             <div className="nav-links" style={{ display: 'flex', gap: '10px' }}>
-            <Link to="/" style={{ textDecoration: 'none' }}>
+            <Link to="/mainpage" style={{ textDecoration: 'none' }}>
                     <button style={{ cursor: 'pointer', border: 'none', backgroundColor: '#323A44', color: 'white', padding: '10px', fontSize: '17px', fontFamily: 'sans-serif', textDecoration: 'none' }}>Faqja Kryesore</button>
                 </Link>
                 <Link to="/rekomandimet" style={{ textDecoration: 'none' }}>
