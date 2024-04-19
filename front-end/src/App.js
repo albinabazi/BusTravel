@@ -22,7 +22,7 @@ function App() {
             <Router>
                 <Header />
                 <Routes>
-                    <Route path="/mainpage" element={<MainPage />} />
+                    <Route path="/" element={<MainPage />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />     
                     <Route path="/passengerDetails" element={<PassengerDetails />} />  
