@@ -13,6 +13,7 @@ import AllFeedbacks from './components/AllFeedbacks';
 import AddFeedback from './components/AddFeedback';
 import EditFeedback from './components/EditFeedback';
 import PaymentMethods from './components/PaymentMethods';
+import MainPage from './components/MainPage';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
             <Router>
                 <Header />
                 <Routes>
+                    <Route path="/" element={<MainPage />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />     
                     <Route path="/passengerDetails" element={<PassengerDetails />} />  

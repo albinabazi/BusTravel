@@ -132,4 +132,4 @@ const EditFeedback = (props) => {
   );
 }
 
-export default EditFeedback;
+export default <EditFeedback />;
