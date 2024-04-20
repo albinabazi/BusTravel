@@ -14,6 +14,8 @@ import AddFeedback from './components/AddFeedback';
 import EditFeedback from './components/EditFeedback';
 import PaymentMethods from './components/PaymentMethods';
 import MainPage from './components/MainPage';
+import LinesPage from './components/Linjat';
+import RouteDetailsPage from './components/RouteDetailsPage';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 function App() {
@@ -31,9 +33,11 @@ function App() {
                     <Route path='/feedbackpage' element={FeedbackPage} /> 
                     <Route path="/AddFeedback" element={AddFeedback} />
                     <Route path="/Feedback" element={Feedback} />
-                    <Route path="/editFeedback/:id" element={EditFeedback} /> 
+                    <Route path="/editFeedback/:id" element={<EditFeedback/>} /> 
                     <Route path="/AllFeedbacks" element={AllFeedbacks} />  
                     <Route path="/paymentMethods" element={<PaymentMethods/>} />  
+                    <Route path="/lines" element={<LinesPage />} />
+                    <Route path="/lines/:id" element={<RouteDetailsPage />} />
                 </Routes>
                 <Footer />
             </Router>
