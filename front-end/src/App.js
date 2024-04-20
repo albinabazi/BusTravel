@@ -16,6 +16,14 @@ import PaymentMethods from './components/PaymentMethods';
 import MainPage from './components/MainPage';
 import LinesPage from './components/Linjat';
 import RouteDetailsPage from './components/RouteDetailsPage';
+import Rekomandimet from './components/Rekomandimet';
+import RecommendationFerizaj from './components/RecommendationFerizaj';
+import RecommendationPrizren from './components/RecommendationPrizren';
+import RecommendationPrishtina from './components/RecommendationPrishtina';
+import RecommendationGjilan from './components/RecommendationGjilan';
+import RecommendationPeje from './components/RecommendationPeje';
+import RecommendationGjakove from './components/RecommendationGjakove';
+import RecommendationMitrovica from './components/RecommendationMitrovica';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 function App() {
@@ -38,6 +46,14 @@ function App() {
                     <Route path="/paymentMethods" element={<PaymentMethods/>} />  
                     <Route path="/lines" element={<LinesPage />} />
                     <Route path="/lines/:id" element={<RouteDetailsPage />} />
+                    <Route path="/rekomandimet" element={Rekomandimet} /> 
+                    <Route path="/recommendationFerizaj" element={RecommendationFerizaj} />
+                    <Route path="/recommendationPrizren" element={RecommendationPrizren} /> 
+                    <Route path="/recommendationPrishtina" element={RecommendationPrishtina} />
+                    <Route path="/recommendationGjilan" element={RecommendationGjilan} />
+                    <Route path="/recommendationPeje" element={RecommendationPeje} />
+                    <Route path="/recommendationGjakove" element={RecommendationGjakove} />
+                    <Route path="/recommendationMitrovice" element={RecommendationMitrovica} />
                 </Routes>
                 <Footer />
             </Router>
