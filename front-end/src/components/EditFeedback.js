@@ -84,15 +84,11 @@ const EditFeedback = (props) => {
 
 
   return (
-
-    
-    <div style={{ marginRight: "33%", paddingLeft: "30%" }}>
-      <form className="w-100 px-5" action="">
+    <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+      <form className="w-50 px-5" action="">
         <h1 className="mt-5">Edito Feedback-un</h1>
-
-
         <div className="mt-4">
-          <label className="h3 form-label">ID</label>
+          <label className="h3 form-label" style={{ color: '#0a4668', fontFamily: 'Inter' }}>ID</label>
           <input
             value={id}
             name="name"
@@ -100,11 +96,10 @@ const EditFeedback = (props) => {
             className="form-control"
             onChange={handleidChange}
           />
-        </div>
-
+        </div>  
 
         <div className="mt-4">
-          <label className="h3 form-label">Teksti</label>
+          <label className="h3 form-label" style={{ color: '#0a4668', fontFamily: 'Inter' }}>Teksti</label>
           <input
             value={formData.text}
             name="name"
@@ -115,7 +110,7 @@ const EditFeedback = (props) => {
         </div>
 
         <div className="mt-4">
-          <label className="h3 form-label">Emri i Kompanisë</label>
+          <label className="h3 form-label" style={{ color: '#0a4668', fontFamily: 'Inter' }}>Emri i Kompanisë</label>
           <input
             value={formData.companyName}
             name="phonenumber"
@@ -125,8 +120,8 @@ const EditFeedback = (props) => {
           />
         </div>
 
-        <button onClick={handleSubmit} className="btn btn-dark btn-lg w-100 mt-5">Edito</button>
-        <Link to="/feedback" className="btn btn-secondary btn-lg w-100 mt-3">Kthehu mbrapa</Link>
+        <button onClick={handleSubmit} className="btn btn-dark w-50 mt-5">Edito</button> <br></br>
+        <Link to="/feedback" className="btn btn-secondary w-50 mt-3 mb-5">Kthehu mbrapa</Link>
       </form> <br></br> <br></br>
     </div>
   );
