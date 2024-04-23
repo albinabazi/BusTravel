@@ -24,6 +24,19 @@ import RecommendationGjilan from './components/RecommendationGjilan';
 import RecommendationPeje from './components/RecommendationPeje';
 import RecommendationGjakove from './components/RecommendationGjakove';
 import RecommendationMitrovica from './components/RecommendationMitrovica';
+import AdminDashboard from './components/AdminDashboard';
+import Location from './components/Location';
+import AddLocation from './components/AddLocation';
+import EditLocation from './components/EditLocation';
+import Company from './components/Company';
+import AddCompany from './components/AddCompany';
+import EditCompany from './components/EditCompany';
+import Itinerary from './components/Itinerary';
+import AddItinerary from './components/AddItinerary';
+import EditItinerary from './components/EditItinerary';
+import BusLines from './components/BusLines';
+import AddBusLines from './components/AddBusLines';
+import EditBusLines from './components/EditBusLines';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 function App() {
@@ -41,7 +54,7 @@ function App() {
                     <Route path='/feedbackpage' element={FeedbackPage} /> 
                     <Route path="/AddFeedback" element={AddFeedback} />
                     <Route path="/Feedback" element={Feedback} />
-                    <Route path="/editFeedback/:id" element={<EditFeedback/>} /> 
+                    <Route path="/editFeedback/:id" element={EditFeedback} /> 
                     <Route path="/AllFeedbacks" element={AllFeedbacks} />  
                     <Route path="/paymentMethods" element={<PaymentMethods/>} />  
                     <Route path="/lines" element={<LinesPage />} />
@@ -54,6 +67,19 @@ function App() {
                     <Route path="/recommendationPeje" element={RecommendationPeje} />
                     <Route path="/recommendationGjakove" element={RecommendationGjakove} />
                     <Route path="/recommendationMitrovice" element={RecommendationMitrovica} />
+                    <Route path='/dashboard' element={AdminDashboard} />
+                    <Route path='/location' element={Location} />
+                    <Route path='/addLocation' element={AddLocation} />
+                    <Route path='/editLocation/:locationId' element={EditLocation} />
+                    <Route path='/company' element={Company} />
+                    <Route path='/addCompany' element={AddCompany} />
+                    <Route path='/editCompany/:companyId' element={EditCompany} />
+                    <Route path='/busItinerary' element={Itinerary} />
+                    <Route path='/addBusItinerary' element={AddItinerary} />
+                    <Route path='/editBusItinerary/:busItineraryId' element={EditItinerary} />
+                    <Route path='/busLines' element={BusLines} />
+                    <Route path='/addBusLine' element={AddBusLines} />
+                    <Route path="/editBusLine/:busLinesId" element={EditBusLines} />
                 </Routes>
                 <Footer />
             </Router>
