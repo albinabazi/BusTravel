@@ -2,11 +2,7 @@ import React from "react";
 import { BsBusFrontFill } from "react-icons/bs";
 import { HiLocationMarker } from "react-icons/hi";
 import { MdOutlineWork } from "react-icons/md";
-import { GrUserAdmin } from "react-icons/gr";
 import { AiOutlineDashboard, AiOutlineFieldTime, AiOutlineUser } from "react-icons/ai";
-import { FcStatistics } from "react-icons/fc";
-import { RiNumbersFill } from "react-icons/ri";
-import { TfiWrite } from "react-icons/tfi";
 import { PieChart, Pie, Tooltip, ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid } from 'recharts';
 
 const AdminDashboard = () => {
