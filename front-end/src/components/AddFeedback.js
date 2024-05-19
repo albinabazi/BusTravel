@@ -22,13 +22,6 @@ const AddFeedback = () => {
     });
   };
 
-  const handleDateChange = (e) => {
-    setFormData({
-      ...formData,
-      date: e.target.value
-    });
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
 

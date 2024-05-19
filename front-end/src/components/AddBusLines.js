@@ -5,13 +5,6 @@ function AddBusLines() {
 
     const [formData, setFormData] = useState(null);
 
-    const handleNameChange = (e => {
-        setFormData({
-            ...formData,
-            name: e.target.value
-        });
-    });
-
     const handledepartureCityIdChange = (e => {
         setFormData({
             ...formData,

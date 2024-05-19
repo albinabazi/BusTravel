@@ -34,10 +34,10 @@ function Rekomandimet() {
                                 <SpinTheWheel />
                             </div>
                             <div className="image-container mt-5">
-                                <img src="https://pbs.twimg.com/media/FyR3-XkWwAA1hAh?format=jpg&name=large" alt="Placeholder Image" style={{ width: '650px', height: '850px', marginTop:'200px' }} />
+                                <img src="https://pbs.twimg.com/media/FyR3-XkWwAA1hAh?format=jpg&name=large" alt="PlaceholderImg" style={{ width: '650px', height: '850px', marginTop:'200px' }} />
                             </div>
                             <div className="image-container mt-5">
-                                <img src="https://scontent.fprn9-1.fna.fbcdn.net/v/t31.18172-8/11227055_1184922601536294_1660850800390104150_o.jpg?_nc_cat=107&ccb=1-7&_nc_sid=5f2048&_nc_ohc=VDaatDJ78RkAb5pjs7p&_nc_ht=scontent.fprn9-1.fna&oh=00_AfBYXo0FqRtYinD3EJ6P2GGoGshnHBPSkQQphUeyU52UkA&oe=66490AF7" alt="Placeholder Image" style={{ width: '650px', height: '450px', marginTop:'400px' }} />
+                                <img src="https://scontent.fprn9-1.fna.fbcdn.net/v/t31.18172-8/11227055_1184922601536294_1660850800390104150_o.jpg?_nc_cat=107&ccb=1-7&_nc_sid=5f2048&_nc_ohc=VDaatDJ78RkAb5pjs7p&_nc_ht=scontent.fprn9-1.fna&oh=00_AfBYXo0FqRtYinD3EJ6P2GGoGshnHBPSkQQphUeyU52UkA&oe=66490AF7" alt="PlaceholderImg" style={{ width: '650px', height: '450px', marginTop:'400px' }} />
                             </div>
                         </div>
                     </div>

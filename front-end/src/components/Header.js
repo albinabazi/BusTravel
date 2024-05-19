@@ -1,11 +1,12 @@
 import React from 'react';
 import logo from './logo.png';
 import { Link } from 'react-router-dom';
+import { useAuth } from './AuthProvider';
+import AuthDetails from './auth/AuthDetails';
 
-const Header = ({ username, onLogout }) => {
-    const handleLogout = () => { 
-        onLogout();
-    };
+const Header = () => {
+    const { currentUser } = useAuth(); // Destructure currentUser directly from useAuth
+    const userRole = currentUser?.role;
 
     return (
         <header className="header-container" style={{ textDecoration: 'none !important', backgroundColor: '#323A44', padding: '10px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -16,7 +17,7 @@ const Header = ({ username, onLogout }) => {
                 </Link>
             </div>
             <div className="nav-links" style={{ display: 'flex', gap: '10px' }}>
-            <Link to="/" style={{ textDecoration: 'none' }}>
+                <Link to="/" style={{ textDecoration: 'none' }}>
                     <button style={{ cursor: 'pointer', border: 'none', backgroundColor: '#323A44', color: 'white', padding: '10px', fontSize: '17px', fontFamily: 'sans-serif', textDecoration: 'none' }}>Faqja Kryesore</button>
                 </Link>
                 <Link to="/rekomandimet" style={{ textDecoration: 'none' }}>
@@ -31,16 +32,23 @@ const Header = ({ username, onLogout }) => {
                 <Link to="/allfeedbacks" style={{ textDecoration: 'none' }}>
                     <button style={{ cursor: 'pointer', border: 'none', backgroundColor: '#323A44', color: 'white', padding: '10px', fontSize: '17px', fontFamily: 'sans-serif', textDecoration: 'none' }}>Feedbacks</button>
                 </Link>
-                {username && (
-                    <Link to="/welcomeBack">{username}</Link>
+                {userRole === 'Admin' && (
+                    <Link to="/dashboard" style={{ textDecoration: 'none' }}>
+                        <button style={{ cursor: 'pointer', border: 'none', backgroundColor: '#323A44', color: 'white', padding: '10px', fontSize: '17px', fontFamily: 'sans-serif', textDecoration: 'none' }}>Admin Dashboard</button>
+                    </Link>
                 )}
-               {/* <button onClick={handleLogout}>Logout</button> */}
-                <Link to="/login" style={{ textDecoration: 'none' }}>
+                {currentUser ? (
+                    <AuthDetails />
+                ) : (
+                    <>
+                        <Link to="/login" style={{ textDecoration: 'none' }}>
                             <button style={{ cursor: 'pointer', border: 'none', backgroundColor: '#323A44', color: 'white', padding: '10px', fontSize: '17px', fontFamily: 'sans-serif', textDecoration: 'none' }}>Kyçuni</button>
                         </Link>
                         <Link to="/register" style={{ textDecoration: 'none' }}>
                             <button style={{ cursor: 'pointer', border: 'none', backgroundColor: '#323A44', color: 'white', padding: '10px', fontSize: '17px', fontFamily: 'sans-serif', textDecoration: 'none' }}>Regjistrohu</button>
                         </Link>
+                    </>
+                )}
             </div>
         </header>
     );

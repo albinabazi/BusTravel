@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Route } from 'react-router-dom'
 
 const AddCompany = () => {
 
