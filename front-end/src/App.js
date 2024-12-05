@@ -58,7 +58,7 @@ function App() {
                         <Route path='/weather' element={<Moti />} />
                         <Route path='/feedbackpage' element={FeedbackPage } />
                         <Route path="/AddFeedback" element={AddFeedback} />
-                        <Route path="/Feedback" element={<Feedback />} />
+                        <Route path="/Feedback" element={Feedback} />
                         <Route path="/editFeedback/:id" element={<EditFeedback />} />
                         <Route path="/AllFeedbacks" element={AllFeedbacks} />
                         <Route path="/paymentMethods" element={<PaymentMethods />} />
