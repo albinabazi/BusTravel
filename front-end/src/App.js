@@ -37,6 +37,7 @@ import EditItinerary from './components/EditItinerary';
 import BusLines from './components/BusLines';
 import AddBusLines from './components/AddBusLines';
 import EditBusLines from './components/EditBusLines';
+import CardDetails from './components/CardDetails';
 import AuthDetails from './components/auth/AuthDetails';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { AuthProvider } from './components/AuthProvider';
@@ -84,6 +85,7 @@ function App() {
                         <Route path='/busLines' element={BusLines } />
                         <Route path='/addBusLine' element={AddBusLines } />
                         <Route path="/editBusLine/:busLinesId" element={<EditBusLines />} />
+                        <Route path='/cardDetails' element={<CardDetails />} />
                         <Route path='/authDetails' element={<AuthDetails />} />
                        {/* <Route path="/admin" element={<PrivateRoute />}>
                             <Route path="dashboard" element={<AdminDashboard />} />
