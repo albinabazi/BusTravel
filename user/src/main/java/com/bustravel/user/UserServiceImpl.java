@@ -57,8 +57,10 @@ public class UserServiceImpl implements UserService{
     @Override
     public UserEntity updateUser(Long id, UserEntity userEntity){
         
-        userRepository.findById(id).orElseThrow(
-            () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User with id "+ id + " is not found"));
+        UserEntity existingUser = userRepository.findById(id).orElseThrow(
+        () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User with id " + id + " is not found"));
+
+        userEntity.setId(existingUser.getId());
 
         return userRepository.save(userEntity);
     }

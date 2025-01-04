@@ -9,6 +9,16 @@
             "projectName": "user",
             "args": "",
             "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-BusRouteApplication<busRoute>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.bustravel.busRoute.BusRouteApplication",
+            "projectName": "busRoute",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
         }
     ]
 }
