@@ -19,6 +19,16 @@
             "projectName": "busRoute",
             "args": "",
             "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-BusFeedbackApplication<busFeedback>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.bustravel.busFeedback.BusFeedbackApplication",
+            "projectName": "busFeedback",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
         }
     ]
 }
