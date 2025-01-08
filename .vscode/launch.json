@@ -29,6 +29,16 @@
             "projectName": "busFeedback",
             "args": "",
             "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-BusReservationApplication<busReservation>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.bustravel.busReservation.BusReservationApplication",
+            "projectName": "busReservation",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
         }
     ]
 }
