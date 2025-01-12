@@ -6,20 +6,20 @@ const Company = () => {
     const [sorted, setSorted] = useState({ sorted: 'id', reversed: false });
 
     function getCompanies() {
-        const url = 'https://localhost:3000/api/company/companies';
+        const url = 'http://localhost:8086/companies';
         fetch(url)
             .then(response => response.json())
             .then(companiesFromServer => {
                 console.log(companiesFromServer);
-                setdbCompany(companiesFromServer);
+                setdbCompany(companiesFromServer.content);
             })
             .catch(error => {
                 console.log(error);
             });
     }
 
-    function deleteCompanies(companyId) {
-        const url = `https://localhost:3000/api/company/company/${companyId}`;
+    function deleteCompanies(id) {
+        const url = `http://localhost:8086/companies/${id}`;
         fetch(url, {
             method: 'DELETE',
         })
@@ -73,23 +73,23 @@ const Company = () => {
                                 <Link to="/addCompany" className="btn btn-secondary">Shto Kompani</Link>
                             </th>
                             <th scope="col">
-                                <button className="btn btn-outline-secondary btn-sm" onClick={sortByName}>Sort</button>
+                                <button className="btn btn-outline-secondary btn-sm" onClick={sortByName}>Sorto sipas emrit</button>
                             </th>
                         </tr>
                     </thead>
                     <tbody>
                         {dbCompany.map(dbCompany => (
-                            <tr key={dbCompany.companyId}>
-                                <td>{dbCompany.companyId}</td>
+                            <tr key={dbCompany.id}>
+                                <td>{dbCompany.id}</td>
                                 <td>{dbCompany.name}</td>
                                 <td>{dbCompany.numberOfBuses}</td>
                                 <td>{dbCompany.phoneNumber}</td>
                                 <td>{dbCompany.email}</td>
                                 <td>
-                                    <Link to={`/editCompany/${dbCompany.companyId}`} className="btn btn-outline-secondary btn-sm">Edito</Link>
+                                    <Link to={`/editCompany/${dbCompany.id}`} className="btn btn-outline-secondary btn-sm">Edito</Link>
                                 </td>
                                 <td>
-                                    <button type="button" className="btn btn-secondary btn-sm" onClick={() => { if (window.confirm(`A jeni i sigurt qe doni te fshini Kompanine? "${dbCompany.companyId}"? `)) deleteCompanies(dbCompany.companyId) }}>Fshi</button>
+                                    <button type="button" className="btn btn-danger btn-sm" onClick={() => { if (window.confirm(`A jeni i sigurt qe doni te fshini Kompanine? "${dbCompany.id}"? `)) deleteCompanies(dbCompany.id) }}>Fshi</button>
                                 </td>
                             </tr>
                         ))}

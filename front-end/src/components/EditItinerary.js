@@ -1,52 +1,57 @@
-import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
-import { useParams } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useParams } from 'react-router-dom';
 
-const EditItinerary = (props) => {
+const EditItinerary = () => {
+    const [formData, setFormData] = useState({
+        departureTime: '',
+        arrivalTime: '',
+        duration: '',
+        busLineId: ''
+    });
+    const { id } = useParams();
 
-    const [formData, setFormData] = useState([]);
-    const { busItineraryId } = useParams();
-
-    console.log(props);
-
-    function getBusItineraryById() {
-        const url = `https://localhost:3000/api/busItinerary/busItineraries/${busItineraryId}`;
+    const getBusItineraryById = () => {
+        const url = `http://localhost:8086/busItineraries/${id}`;
         fetch(url, {
             method: 'GET',
-
         })
             .then(response => response.json())
-            .then(itinerariesFromServer => {
-                console.log(itinerariesFromServer);
-                setFormData(itinerariesFromServer);
+            .then(itineraryFromServer => {
+                setFormData({
+                    departureTime: itineraryFromServer.departureTime,
+                    arrivalTime: itineraryFromServer.arrivalTime,
+                    duration: itineraryFromServer.duration,
+                    busLineId: itineraryFromServer.busLine.id
+                });
             })
             .catch(error => {
                 console.log(error);
             });
-    }
+    };
 
-    useEffect(getBusItineraryById, []);
+    useEffect(() => {
+        getBusItineraryById();
+    }, [id]);
 
-    const handleChange = (e => {
+    const handleChange = (e) => {
+        const { name, value } = e.target;
         setFormData({
             ...formData,
-            [e.target.name]: e.target.value,
+            [name]: value
         });
-    });
+    };
 
-    const handleSubmit = (e => {
+    const handleSubmit = (e) => {
         e.preventDefault();
 
         const ItineraryToEdit = {
-
             departureTime: formData.departureTime,
             arrivalTime: formData.arrivalTime,
-            departureTime: formData.departureTime,
-            busLineId: formData.busLineId
-
+            duration: formData.duration,
+            busLine: { id: formData.busLineId }
         };
 
-        const url = `https://localhost:3000/api/busItinerary/busItineraries`;
+        const url = `http://localhost:8086/busItineraries/${id}`;
 
         fetch(url, {
             method: 'PUT',
@@ -58,44 +63,70 @@ const EditItinerary = (props) => {
             .then(response => response.json())
             .then(responseFromServer => {
                 console.log(responseFromServer);
+                alert('Itinerari u editua me sukses!');
+                window.location.href = "/busItinerary";
             })
             .catch(error => {
                 console.log(error);
+                alert('Gabim gjatë editimit të itinerarit!');
             });
-
-        alert('Itinerari u editua me sukses!');
-        { window.location.href = "/busItinerary" }
-
-
-    });
+    };
 
     return (
-        <div style={{display: 'flex', flexDirection: 'row', justifyContent:'center' }}>
-            <form className="w-50 px-5" action="">
+        <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
+            <form className="w-50 px-5" onSubmit={handleSubmit}>
                 <h1 className="mt-5">Edito Itinerarin</h1>
 
                 <div className="mt-5">
                     <label className="h3 form-label" style={{ color: '#0a4668', fontFamily: 'Inter' }}>Koha e Nisjes</label>
-                    <input value={formData.departureTime} name="itineraryDeparture" type="time" className="form-control" onChange={handleChange} />
+                    <input
+                        value={formData.departureTime}
+                        name="departureTime"
+                        type="time"
+                        className="form-control"
+                        onChange={handleChange}
+                    />
                 </div>
 
                 <div className="mt-4">
                     <label className="h3 form-label" style={{ color: '#0a4668', fontFamily: 'Inter' }}>Koha e Mberritjes</label>
-                    <input value={formData.arrivalTime} name="itineraryArrival" type="time" className="form-control" onChange={handleChange} />
+                    <input
+                        value={formData.arrivalTime}
+                        name="arrivalTime"
+                        type="time"
+                        className="form-control"
+                        onChange={handleChange}
+                    />
                 </div>
 
                 <div className="mt-4">
                     <label className="h3 form-label" style={{ color: '#0a4668', fontFamily: 'Inter' }}>Linja</label>
-                    <input value={formData.busLineId} name="itineraryBusLine" type="number" className="form-control" onChange={handleChange} />
+                    <input
+                        value={formData.busLineId}
+                        name="busLineId"
+                        type="number"
+                        className="form-control"
+                        onChange={handleChange}
+                    />
                 </div>
-                <button onClick={handleSubmit} className="btn btn-dark w-50 mt-5">Edito</button> <br></br>
-                <Link to="/busItinerary" onClick={() => { window.location.href = "/busItinerary" }} className="btn btn-secondary w-50 mt-3 mb-5">Kthehu mbrapa</Link>
 
+                <div className="mt-4">
+                    <label className="h3 form-label" style={{ color: '#0a4668', fontFamily: 'Inter' }}>Kohezgjatja</label>
+                    <input
+                        value={formData.duration}
+                        name="duration"
+                        type="text"
+                        className="form-control"
+                        onChange={handleChange}
+                    />
+                </div>
+
+                <button type="submit" className="btn btn-dark w-50 mt-5">Edito</button>
+                <br />
+                <Link to="/busItinerary" className="btn btn-secondary w-50 mt-3 mb-5">Kthehu mbrapa</Link>
             </form>
-
-
         </div>
-    )
-}
+    );
+};
 
 export default <EditItinerary />;

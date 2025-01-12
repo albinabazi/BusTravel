@@ -6,10 +6,11 @@ import { useParams } from 'react-router-dom';
 const EditCompany = (props) => {
 
     const [formData, setFormData] = useState([]);
-    const { companyId } = useParams();
+    const { id } = useParams();
+    console.log(props);
 
     function getCompanyById() {
-        const url = `https://localhost:3000/api/company/company/${companyId}`;
+        const url = `http://localhost:8086/companies/${id}`;
         fetch(url, {
             method: 'GET',
 
@@ -44,7 +45,7 @@ const EditCompany = (props) => {
 
         };
 
-        const url = 'https://localhost:3000/api/company/company';
+        const url = `http://localhost:8086/companies/${id}`;
 
         fetch(url, {
             method: 'PUT',
@@ -104,4 +105,4 @@ const EditCompany = (props) => {
     )
 }
 
-export default <EditCompany />;
+export default EditCompany;

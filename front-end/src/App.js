@@ -59,7 +59,7 @@ function App() {
                         <Route path='/weather' element={<Moti />} />
                         <Route path='/feedbackpage' element={FeedbackPage } />
                         <Route path="/AddFeedback" element={AddFeedback} />
-                        <Route path="/Feedback" element={Feedback} />
+                        <Route path="/Feedback" element={<Feedback/>} />
                         <Route path="/editFeedback/:id" element={<EditFeedback />} />
                         <Route path="/AllFeedbacks" element={AllFeedbacks} />
                         <Route path="/paymentMethods" element={<PaymentMethods />} />
@@ -73,18 +73,18 @@ function App() {
                         <Route path="/recommendationPeje" element={RecommendationPeje } />
                         <Route path="/recommendationGjakove" element={RecommendationGjakove} />
                         <Route path="/recommendationMitrovice" element={RecommendationMitrovica} />
-                        <Route path='/location' element={Location } />
+                        <Route path='/location' element={<Location />} />
                         <Route path='/addLocation' element={AddLocation } />
-                        <Route path='/editLocation/:locationId' element={<EditLocation />} />
+                        <Route path='/editLocation/:id' element={<EditLocation />} />
                         <Route path='/company' element={Company } />
                         <Route path='/addCompany' element={AddCompany } />
-                        <Route path='/editCompany/:companyId' element={<EditCompany />} />
+                        <Route path='/editCompany/:id' element={<EditCompany />} />
                         <Route path='/busItinerary' element={Itinerary } />
                         <Route path='/addBusItinerary' element={AddItinerary } />
-                        <Route path='/editBusItinerary/:busItineraryId' element={<EditItinerary />} />
-                        <Route path='/busLines' element={BusLines } />
+                        <Route path='/editBusItinerary/:id' element={EditItinerary} />
+                        <Route path='/busLines' element={<BusLines />} />
                         <Route path='/addBusLine' element={AddBusLines } />
-                        <Route path="/editBusLine/:busLinesId" element={<EditBusLines />} />
+                        <Route path="/editBusLine/:id" element={EditBusLines} />
                         <Route path='/cardDetails' element={<CardDetails />} />
                         <Route path='/authDetails' element={<AuthDetails />} />
                        {/* <Route path="/admin" element={<PrivateRoute />}>

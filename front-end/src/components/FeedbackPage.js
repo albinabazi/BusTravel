@@ -28,7 +28,7 @@ const FeedbackPage = () => {
      
     };
 
-    const url = `https://localhost:3000/api/feedback`; 
+    const url = `http://localhost:8085/feedback`;
         
     fetch(url, {
       method: 'POST',
