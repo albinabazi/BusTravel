@@ -11,9 +11,9 @@ const AllFeedbacks = () => {
   useEffect(() => {
     const getFeedbacks = async () => {
       try {
-        const response = await fetch('https://localhost:3000/api/feedback');
+        const response = await fetch('http://localhost:8085/feedback?page=0&size=20');
         const feedbacksFromServer = await response.json();
-        setDbFeedback(feedbacksFromServer);
+        setDbFeedback(feedbacksFromServer.content); // Use the 'content' array
       } catch (error) {
         console.error('Error fetching feedback:', error);
       }
@@ -25,10 +25,10 @@ const AllFeedbacks = () => {
   const sortByDate = () => {
     setSorted(prevSorted => ({ sorted: '', reversed: !prevSorted.reversed }));
     const feedbackCopy = [...dbFeedback];
-    feedbackCopy.sort((dateA, dateB) => {
-      const fullDateA = dateA.date;
-      const fullDateB = dateB.date;
-      return sorted.reversed ? fullDateB.localeCompare(fullDateA) : fullDateA.localeCompare(fullDateB);
+    feedbackCopy.sort((a, b) => {
+      const dateA = new Date(a.date);
+      const dateB = new Date(b.date);
+      return sorted.reversed ? dateB - dateA : dateA - dateB;
     });
     setDbFeedback(feedbackCopy);
   };
@@ -51,7 +51,9 @@ const AllFeedbacks = () => {
       <div className="text-center mb-4">
         <img src="./images/f1.png" alt="Feedback illustration" style={{width:'600px'}} className="img-fluid rounded" />
       </div>
-      <h3 className="text-center mt-5 my-4" style={{ fontFamily: 'Inter', color: '#0a4668' }}>Me poshte gjeni Komentet/Feedbacks</h3>
+      <h3 className="text-center mt-5 my-4" style={{ fontFamily: 'Inter', color: '#0a4668' }}>
+        Me poshte gjeni Komentet/Feedbacks
+      </h3>
       <div id="feedback" className="table-responsive">
         <table className="table table-striped">
           <thead className="thead-dark">
@@ -59,13 +61,13 @@ const AllFeedbacks = () => {
               <th scope="col">Kompania</th>
               <th scope="col">Komenti</th>
               <th scope="col" className="text-center" style={{ cursor: 'pointer' }}>
-                <button className="btn btn-outline-secondary btn-sm" onClick={sortByDate} >Data↑↓</button>
+                <button className="btn btn-outline-secondary btn-sm" onClick={sortByDate}>Data↑↓</button>
               </th>
             </tr>
           </thead>
           <tbody>
             {dbFeedback.map(feedback => (
-              <tr key={feedback.feedbackId}>
+              <tr key={feedback.id}>
                 <td>{feedback.companyName}</td>
                 <td>{feedback.text}</td>
                 <td>{moment.utc(feedback.date).format('MM/DD/YY')}</td>

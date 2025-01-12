@@ -6,20 +6,22 @@ const Itinerary = () => {
     const [sorted, setSorted] = useState({ sorted: 'id', reversed: false });
 
     function getBusItineraries() {
-        const url = 'https://localhost:3000/api/busItinerary/busItineraries';
-        fetch(url)
+        const url = 'http://localhost:8086/busItineraries';
+        fetch(url, {
+            method: 'GET',
+        })
             .then(response => response.json())
             .then(busItinerarysFromServer => {
                 console.log(busItinerarysFromServer);
-                setdbBusItinerary(busItinerarysFromServer);
+                setdbBusItinerary(busItinerarysFromServer.content);
             })
             .catch(error => {
                 console.log(error);
             });
     }
 
-    function deleteBusItineraries(busItineraryId) {
-        const url = `https://localhost:3000/api/busItinerary/busItineraries/${busItineraryId}`;
+    function deleteBusItineraries(id) {
+        const url = `http://localhost:8086/busItineraries/${id}`;
         fetch(url, {
             method: 'DELETE',
         })
@@ -69,23 +71,23 @@ const Itinerary = () => {
                                 <Link to='/addBusItinerary' className='btn btn-secondary'>Shto Itinerarin</Link>
                             </th>
                             <th scope='col'>
-                                <button className='btn btn-outline-secondary btn-sm' onClick={sortById}>Sort</button>
+                                <button className='btn btn-outline-secondary btn-sm' onClick={sortById}>Sort by ID</button>
                             </th>
                         </tr>
                     </thead>
                     <tbody>
                         {dbBusItinerary.map(dbBusItinerary => (
-                            <tr key={dbBusItinerary.busItineraryId}>
-                                <td>{dbBusItinerary.busItineraryId}</td>
+                            <tr key={dbBusItinerary.id}>
+                                <td>{dbBusItinerary.id}</td>
                                 <td>{dbBusItinerary.departureTime}</td>
                                 <td>{dbBusItinerary.arrivalTime}</td>
                                 <td>{dbBusItinerary.duration}</td>
-                                <td>{dbBusItinerary.busLineId}</td>
+                                <td>{dbBusItinerary.busLine.id}</td>
                                 <td>
-                                    <Link to={`/editBusItinerary/${dbBusItinerary.busItineraryId}`} className='btn btn-outline-secondary btn-sm'>Edito</Link>
+                                    <Link to={`/editBusItinerary/${dbBusItinerary.id}`} className='btn btn-outline-secondary btn-sm'>Edito</Link>
                                 </td>
                                 <td>
-                                    <button type='button' className='btn btn-secondary btn-sm' onClick={() => { if (window.confirm(`A jeni i sigurt qe doni te fshini Itinerarin? "${dbBusItinerary.busItineraryId}"? `)) deleteBusItineraries(dbBusItinerary.busItineraryId) }}>Fshi</button>
+                                    <button type='button' className='btn btn-danger btn-sm' onClick={() => { if (window.confirm(`A jeni i sigurt qe doni te fshini Itinerarin? "${dbBusItinerary.id}"? `)) deleteBusItineraries(dbBusItinerary.id) }}>Fshi</button>
                                 </td>
                             </tr>
                         ))}

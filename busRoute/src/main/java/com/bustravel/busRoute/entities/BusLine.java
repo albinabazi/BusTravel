@@ -5,7 +5,6 @@ import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -28,17 +27,17 @@ public class BusLine {
 
     @ManyToOne
     @JoinColumn(name = "departure_city_id")
-    @JsonIgnoreProperties({"locationName", "latitude", "longitude"})
+    @JsonIgnoreProperties({"latitude", "longitude"})
     private Location departureCity;
 
     @ManyToOne
     @JoinColumn(name = "arrival_city_id")
-    @JsonIgnoreProperties({"locationName", "latitude", "longitude"})
+    @JsonIgnoreProperties({"latitude", "longitude"})
     private Location arrivalCity;
 
     @ManyToOne
     @JoinColumn(name = "company_id")
-    @JsonIgnoreProperties({"name", "numberOfBuses", "phoneNumber", "email"})
+    @JsonIgnoreProperties({"numberOfBuses", "phoneNumber", "email"})
     private Company company;
 
     @Column(name = "number_of_seats")
@@ -47,7 +46,6 @@ public class BusLine {
     private Double price;
 
     @OneToMany(mappedBy = "busLine", cascade = CascadeType.ALL, orphanRemoval = true, fetch = jakarta.persistence.FetchType.EAGER)
-    @JsonManagedReference
     @JsonIgnore
     private Set<BusItinerary> busItineraries  = new HashSet<>();
 

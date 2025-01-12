@@ -1,90 +1,117 @@
-import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
-import { useParams } from 'react-router-dom';
-
-
+import React, { useState, useEffect } from "react";
+import { Link, useParams } from "react-router-dom";
 
 const EditLocation = (props) => {
+  const [formData, setFormData] = useState({ id: "", locationName: "" });
+  const { id } = useParams();
+  console.log(props);
 
-    const [formData, setFormData] = useState([]);
-    const { locationId } = useParams();
+  const GetLocationById = () => {
+    const url = `http://localhost:8086/locations/${id}`;
+    fetch(url, {
+      method: "GET",
+    })
+      .then((response) => response.json())
+      .then((locationFromServer) => {
+        setFormData(locationFromServer);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
+  useEffect(GetLocationById, [id]);
 
-    console.log(props);
-
-    function getLocationById() {
-        const url = `https://localhost:3000/api/location/city/${locationId}`;
-        fetch(url, {
-            method: 'GET',
-        })
-            .then(response => response.json())
-            .then(locationsFromServer => {
-                console.log(locationsFromServer);
-                setFormData(locationsFromServer);
-            })
-            .catch(error => {
-                console.log(error);
-            });
-    }
-
-    useEffect(getLocationById, []);
-
-    const handleChange = (e => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value,
-        });
+  const handleNameChange = (e) => {
+    setFormData({
+      ...formData,
+      locationName: e.target.value,
     });
+  };
 
-    const handleSubmit = (e => {
-        e.preventDefault();
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  
+    const locationToEdit = {
+      id: id,
+      locationName: formData.locationName,
+    };
+  
+    const url = `http://localhost:8086/locations/${id}`;
+  
+    fetch(url, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(locationToEdit),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          return response.json().then((error) => {
+            throw new Error(error.message || "Failed to update location.");
+          });
+        }
+        alert("Lokacioni është edituar me sukses!");
+        window.location.href = "/location";
+      })
+      .catch((error) => {
+        console.error(error);
+        alert("Ky lokacion nuk mund të editohet!");
+      });
+  };  
 
-        const LocationToEdit = {
-
-            locationName: formData.locationName,
-
-        };
-
-        const url = `https://localhost:3000/api/location/city`;
-
-        fetch(url, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(LocationToEdit)
-        })
-            .then(response => response.json())
-            .then(responseFromServer => {
-                console.log(responseFromServer);
-            })
-            .catch(error => {
-                console.log(error);
-            });
-
-        alert('Lokacioni u editua me sukses!');
-        { window.location.href = "/location" }
-
-
-    });
-
-    return (
-        <div className='d-flex justify-content-center'>
-            <form className="w-50 px-5" action="">
-                <h1 className="mt-5">Edito Lokacionin</h1>
-
-                <div className="mt-4">
-                    <label className="h3 form-label mt-3" style={{ color: '#0a4668', fontFamily: 'Inter' }}>Emri</label>
-                    <input value={formData.locationName} name="locationName" type="text" className="form-control" onChange={handleChange} />
-                </div>
-
-                <button onClick={handleSubmit} className="btn btn-dark w-50 mt-5">Edito</button> <br></br>
-                <Link to="/location" onClick={() => { window.location.href = "/location" }} className="btn btn-secondary w-50 mt-3 mb-5">Kthehu mbrapa</Link>
-
-            </form>
-
-
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <form className="w-50 px-5" onSubmit={handleSubmit}>
+        <h1 className="mt-5">Edito Lokacionin</h1>
+        <div className="mt-4">
+          <label
+            className="h3 form-label"
+            style={{ color: "#0a4668", fontFamily: "Inter" }}
+          >
+            ID
+          </label>
+          <input
+            value={id}
+            name="id"
+            type="text"
+            className="form-control"
+            readOnly
+          />
         </div>
-    )
-}
-export default <EditLocation />;
+        <div className="mt-4">
+          <label
+            className="h3 form-label"
+            style={{ color: "#0a4668", fontFamily: "Inter" }}
+          >
+            Emri i Lokacionit
+          </label>
+          <input
+            value={formData.locationName}
+            name="name"
+            type="text"
+            className="form-control"
+            onChange={handleNameChange}
+          />
+        </div>
+        <button type="submit" className="btn btn-dark w-50 mt-5">
+          Edito
+        </button>
+        <br />
+        <Link to="/location" className="btn btn-secondary w-50 mt-3 mb-5">
+          Kthehu mbrapa
+        </Link>
+      </form>
+    </div>
+  );
+};
+
+export default EditLocation;

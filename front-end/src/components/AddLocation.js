@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 const AddLocation = () => {
-    const [formData, setFormData] = useState({}); // Initialize with an empty object
+    const [formData, setFormData] = useState({
+        locationName: ''
+    });
 
     const handleChange = (e) => {
         setFormData({
@@ -18,7 +20,7 @@ const AddLocation = () => {
             locationName: formData.locationName,
         };
 
-        const url = `https://localhost:3000/api/location/city`;
+        const url = `http://localhost:8086/locations`;
 
         fetch(url, {
             method: 'POST',

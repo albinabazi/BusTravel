@@ -1,361 +1,172 @@
-import React, { useState, useEffect } from "react";
-import background from "./front_page.jpeg";
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
-const LinesPage = () => {
-  const [busLines, setBusLines] = useState([]);
-  const [locations, setLocations] = useState([]);
+const Lines = () => {
+  const [dbLines, setdbLines] = useState([]); // Always an array
+  const [dbLocation, setdbLocation] = useState([]);
+  const [dbCompanies, setdbCompanies] = useState([]);
+  const [selectedDepartureCity, setSelectedDepartureCity] = useState('');
+  const [selectedArrivalCity, setSelectedArrivalCity] = useState('');
 
-  const [departureCity, setDepartureCity] = useState("");
-  const [destinationCity, setDestinationCity] = useState("");
-  const [date, setDate] = useState("");
-  const [departureOptions, setDepartureOptions] = useState([]);
-  const [destinationOptions, setDestinationOptions] = useState([]);
+  function getLines() {
+    const url = `http://localhost:8086/busLines`;
+    fetch(url, { method: 'GET' })
+      .then(response => response.json())
+      .then(LinesFromServer => {
+        console.log(LinesFromServer);
+        if (Array.isArray(LinesFromServer)) {
+          setdbLines(LinesFromServer); // Ensure it is set to an array
+        } else {
+          setdbLines([]); // Fallback to empty array if not an array
+        }
+      })
+      .catch(error => {
+        console.log(error);
+        setdbLines([]); // Fallback on error
+      });
+  }
+
+  function getLocations() {
+    const url = `http://localhost:8086/locations`;
+    fetch(url, { method: 'GET' })
+      .then(response => response.json())
+      .then(locationsFromServer => {
+        console.log(locationsFromServer);
+        if (Array.isArray(locationsFromServer)) {
+          setdbLocation(locationsFromServer); // Ensure it is set to an array
+        } else {
+          setdbLocation([]); // Fallback to empty array if not an array
+        }
+      })
+      .catch(error => {
+        console.log(error);
+        setdbLocation([]); // Fallback on error
+      });
+  }
+
+  function getCompanies() {
+    const url = `http://localhost:8086/companies`;
+    fetch(url, { method: 'GET' })
+      .then(response => response.json())
+      .then(companiesFromServer => {
+        console.log(companiesFromServer);
+        setdbCompanies(companiesFromServer); // Set companies data
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
 
   useEffect(() => {
-    fetchLines();
-    fetchLocations();
+    getLines();
+    getLocations();
+    getCompanies();
   }, []);
 
-  const fetchLines = async () => {
-    try {
-      const response = await fetch(
-        "https://localhost:7191/api/busLines/busLines"
-      );
-      const data = await response.json();
-      setBusLines(data);
-    } catch (error) {
-      console.error("Error fetching bus lines:", error);
+  const filteredLines = dbLines.filter(dbLine => {
+    if (selectedDepartureCity && dbLine.departureCityId !== parseInt(selectedDepartureCity)) {
+      return false;
     }
-  };
-
-  const fetchLocations = async () => {
-    try {
-      const response = await fetch(
-        "https://localhost:7191/api/location/cities"
-      );
-      const data = await response.json();
-      setLocations(data);
-    } catch (error) {
-      console.error("Error fetching locations:", error);
+    if (selectedArrivalCity && dbLine.arrivalCityId !== parseInt(selectedArrivalCity)) {
+      return false;
     }
-  };
-
-  const handleDepartureChange = (event) => {
-    const value = event.target.value;
-    setDepartureCity(value);
-    filterDepartureOptions(value);
-  };
-
-  const handleDestinationChange = (event) => {
-    const value = event.target.value;
-    setDestinationCity(value);
-    filterDestinationOptions(value);
-  };
-
-  const filterDepartureOptions = (searchTerm) => {
-    const filteredCities = locations.filter((city) =>
-      city.locationName.toLowerCase().startsWith(searchTerm.toLowerCase())
-    );
-    setDepartureOptions(filteredCities);
-  };
-
-  const filterDestinationOptions = (searchTerm) => {
-    const filteredCities = locations.filter((city) =>
-      city.locationName.toLowerCase().startsWith(searchTerm.toLowerCase())
-    );
-    setDestinationOptions(filteredCities);
-  };
-
-  const handleDepartureSelect = (city) => {
-    setDepartureCity(city);
-    setDepartureOptions([]);
-  };
-
-  const handleDestinationSelect = (city) => {
-    setDestinationCity(city);
-    setDestinationOptions([]);
-  };
-
-  const filteredLines = busLines.filter((line) => {
-    const matchesDeparture = departureCity
-      ? locations.find((loc) => loc.locationId === line.departureCityId)
-          ?.locationName === departureCity
-      : true;
-    const matchesDestination = destinationCity
-      ? locations.find((loc) => loc.locationId === line.arrivalCityId)
-          ?.locationName === destinationCity
-      : true;
-    return matchesDeparture && matchesDestination;
+    return true;
   });
 
   return (
-    <div>
-      <div>
-        <div>
-          <img
-            src={background}
-            style={{
-              top: "auto",
-              right: 0,
-              position: "absolute",
-              objectFit: "cover",
-              width: "100%",
-              height: "350px",
-            }}
-            alt="Background"
-          />
+    <div className="container my-4">
+      <h3 className="text-center mb-4">Linjat</h3>
+
+      <div className="row mb-4">
+        <div className="col-md-5 mx-auto">
+          <div className="mb-3">
+            <label htmlFor="departureCity" className="form-label"><b>Destinacioni i Nisjes</b></label>
+            <select
+              id="departureCity"
+              className="form-select"
+              value={selectedDepartureCity}
+              onChange={(e) => setSelectedDepartureCity(e.target.value)}
+            >
+              <option value="">Zgjedhni destinacionin</option>
+              {dbLocation.length > 0 ? (
+                dbLocation.map(location => (
+                  <option key={location.id} value={location.id}>
+                    {location.locationName}
+                  </option>
+                ))
+              ) : (
+                <option>No locations available</option>
+              )}
+            </select>
+          </div>
         </div>
-        <div>
-          <h1
-            style={{
-              position: "relative",
-              paddingTop: "100px",
-              paddingRight: "500px",
-              color: "white",
-              fontSize: "25px",
-            }}
-          >
-            Rezervoni dhe kërkoni autobusë në Kosovë.
-          </h1>
+        <div className="col-md-5 mx-auto">
+          <div className="mb-3">
+            <label htmlFor="arrivalCity" className="form-label"><b>Destinacioni i Mb&euml;rritjes</b></label>
+            <select
+              id="arrivalCity"
+              className="form-select"
+              value={selectedArrivalCity} 
+              onChange={(e) => setSelectedArrivalCity(e.target.value)}
+            >
+              <option value="">Zgjedhni destinacionin</option>
+              {dbLocation.length > 0 ? (
+                dbLocation.map(location => (
+                  <option key={location.id} value={location.id}>
+                    {location.locationName}
+                  </option>
+                ))
+              ) : (
+                <option>No locations available</option>
+              )}
+            </select>
+          </div>
         </div>
       </div>
 
-      <div style={{ height: "300px" }}></div>
-
-      <form
-        style={{
-          backgroundColor: "white",
-          position: "relative",
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "center",
-          margin: "auto",
-          width: "70%",
-          height: "100px",
-          borderRadius: "5px",
-          marginTop: "-120px",
-          boxShadow: "5px 10px 5px #e1e3eb",
-          marginBottom: "100px",
-        }}
-      >
-        <div style={{ display: "flex" }}>
-          <div className="dropdown">
-            <input
-              type="text"
-              id="departure"
-              value={departureCity}
-              onChange={handleDepartureChange}
-              placeholder="From: City"
-              required
-              style={{
-                width: "250px",
-                height: "40px",
-                backgroundColor: "#f1f2f6",
-                borderRadius: "5px",
-                marginTop: "25px",
-                marginRight: "3px",
-                border: 0,
-              }}
-            />
-            {departureOptions.length > 0 && (
-              <ul
-                className="dropdown-list"
-                style={{
-                  listStyleType: "none",
-                  width: "150px",
-                  padding: 0,
-                  margin: 0,
-                  border: "1px solid #ccc",
-                  borderTop: "none",
-                  borderRadius: "0 0 5px 5px",
-                  position: "absolute",
-                  backgroundColor: "#fff",
-                  zIndex: "1",
-                  cursor: "pointer",
-                }}
-              >
-                {departureOptions.map((city) => (
-                  <button
-                    key={city.locationId}
-                    onClick={() => handleDepartureSelect(city)}
-                    onKeyPress={(e) => {
-                      if (e.key === "Enter") handleDepartureSelect(city);
-                    }}
-                    style={{
-                      background: "none",
-                      border: "none",
-                      textAlign: "left",
-                      width: "100%",
-                    }}
-                  >
-                    {city.locationName}
-                  </button>
-                ))}
-              </ul>
-            )}
-          </div>
-
-          <div className="dropdown">
-            <input
-              type="text"
-              id="destination"
-              value={destinationCity}
-              onChange={handleDestinationChange}
-              placeholder="To: City"
-              required
-              style={{
-                width: "250px",
-                height: "40px",
-                backgroundColor: "#f1f2f6",
-                borderRadius: "5px",
-                marginTop: "25px",
-                marginRight: "3px",
-                border: 0,
-              }}
-            />
-            {destinationOptions.length > 0 && (
-              <ul
-                className="dropdown-list"
-                style={{
-                  listStyleType: "none",
-                  width: "150px",
-                  padding: 0,
-                  margin: 0,
-                  border: "1px solid #ccc",
-                  borderTop: "none",
-                  borderRadius: "0 0 5px 5px",
-                  position: "absolute",
-                  backgroundColor: "#fff",
-                  zIndex: "1",
-                  cursor: "pointer",
-                }}
-              >
-                {destinationOptions.map((city, index) => (
-                  <button
-                    key={city.locationId}
-                    onClick={() => handleDestinationSelect(city)}
-                    onKeyPress={(e) => {
-                      if (e.key === "Enter") handleDestinationSelect(city);
-                    }}
-                    style={{
-                      background: "none",
-                      border: "none",
-                      textAlign: "left",
-                      width: "100%",
-                    }}
-                  >
-                    {city.locationName}
-                  </button>
-                ))}
-              </ul>
-            )}
-          </div>
-
-          <input
-            type="date"
-            id="date"
-            style={{
-              width: "250px",
-              height: "40px",
-              backgroundColor: "#f1f2f6",
-              borderRadius: "5px",
-              marginTop: "25px",
-              marginRight: "3px",
-              border: 0,
-            }}
-          ></input>
-        </div>
-
-        <div>
-          <button
-            type="submit"
-            style={{
-              width: "150px",
-              height: "40px",
-              border: "none",
-              color: "white",
-              backgroundColor: "#fa6b6b",
-              borderRadius: "5px",
-              marginTop: "25px",
-              fontSize: "13px",
-              letterSpacing: ".5px",
-            }}
-          >
-            Search
-          </button>
-        </div>
-      </form>
-
-      <div className="table-responsive mb-5 p-5">
-        <table className="table table-bordered">
-          <thead>
+      <div className="table-responsive m-5">
+        <table className="table table-striped">
+          <thead className="table-dark">
             <tr>
-              <th>#</th>
-              <th>Lokacioni i Nisjes</th>
-              <th>Lokacioni i Mbërritjes</th>
-              <th>Kohëzgjatja</th>
-              <th>Çmimi</th>
-              <th>Itineraret</th>
+              <th> Linja ID </th>
+              <th> Lokacioni i Nisjes </th>
+              <th> Lokacioni i Mberritjes </th>
+              <th> Kompania </th>
+              <th> Numri i Uleseve </th>
+              <th> Cmimi </th>
+              <th> Itinerari </th>
             </tr>
           </thead>
           <tbody>
-            {filteredLines.map((line, index) => (
-              <tr key={line.id}>
-                <td>{index + 1}</td>
-                <td>{line.departureCityName}</td>
-                <td>{line.arrivalCityName}</td>
-                <td>{line.duration}</td>
-                <td>{line.price} EUR</td>
-                <td
-                  style={{
-                    backgroundColor: "#F5F5F5",
-                    fontFamily: "Inter",
-                    fontSize: "16px",
-                    padding: "10px",
-                  }}
-                >
-                  <table style={{ width: "100%", borderCollapse: "collapse" }}>
-                    <tbody>
-                      {line.busItineraries?.map((itinerary) => (
-                        <tr
-                          key={itinerary.busItineraryId}
-                          style={{ borderBottom: "1px solid #ddd" }}
-                        >
-                          <td style={{ padding: "5px" }}>
-                            Nisja: {itinerary.departureTime}
-                          </td>
-                          <td style={{ padding: "5px" }}>
-                            Mbërritja: {itinerary.arrivalTime}
-                          </td>
-                          <td style={{ padding: "5px" }}>
-                            Kohëzgjatja: {itinerary.duration}
-                          </td>
-                          <td style={{ padding: "5px" }}>
-                            <a
-                              href="/cardDetails"
-                              style={{ textDecoration: "none" }}
-                            >
-                              <button
-                                style={{
-                                  padding: "5px 10px",
-                                  backgroundColor: "#fa6b6b",
-                                  color: "white",
-                                  border: "none",
-                                  borderRadius: "5px",
-                                  cursor: "pointer",
-                                }}
-                              >
-                                Rezervo
-                              </button>
-                            </a>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </td>
-              </tr>
-            ))}
+            {filteredLines.map(dbLine => {
+              const departureCity = dbLocation.find(location => location.id === dbLine.departureCityId);
+              const arrivalCity = dbLocation.find(location => location.id === dbLine.arrivalCityId);
+              const company = dbCompanies.find(company => company.id === dbLine.companyId);
+
+              return (
+                <tr key={dbLine.id}>
+                  <td>{dbLine.id}</td>
+                  <td>{departureCity ? departureCity.locationName : ''}</td>
+                  <td>{arrivalCity ? arrivalCity.locationName : ''}</td>
+                  <td>{company ? company.name : ''}</td>
+                  <td>{dbLine.numberOfSeats}</td>
+                  <td>{dbLine.price} Euro</td>
+                  <td>
+                    {dbLine.busItineraries.map(itinerary => (
+                      <div key={itinerary.id} className="mb-2">
+                        <div>Nisja: {itinerary.departureTime}</div>
+                        <div>Mberritja: {itinerary.arrivalTime}</div>
+                        <div>Kohezgjatja: {itinerary.duration}</div>
+                        <Link to="/cardDetails">
+                          <button className="btn btn-primary mt-2">Rezervo</button>
+                        </Link>
+                        <hr />
+                      </div>
+                    ))}
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
@@ -363,4 +174,4 @@ const LinesPage = () => {
   );
 };
 
-export default LinesPage;
+export default Lines;

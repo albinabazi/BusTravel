@@ -5,12 +5,14 @@ const BusLines = () => {
     const [dbBusLines, setdbBusLines] = useState([]);
 
     function getBusLines() {
-        const url = 'https://localhost:3000/api/busLines/busLines';
-        fetch(url)
+        const url = 'http://localhost:8086/busLines';
+        fetch(url, {
+            method: 'GET',
+        })
             .then(response => response.json())
             .then(busLinesFromServer => {
                 console.log(busLinesFromServer);
-                setdbBusLines(busLinesFromServer);
+                setdbBusLines(busLinesFromServer.content);
             })
             .catch(error => {
                 console.log(error);
@@ -18,13 +20,10 @@ const BusLines = () => {
     }
 
     function deleteBusLines(id) {
-        const url = `https://localhost:3000/api/busLines/busLines/${id}`;
-        fetch(url, {
-            method: 'DELETE',
-        })
+        const url = `http://localhost:8086/busLines/${id}`;
+        fetch(url, { method: 'DELETE' })
             .then(response => {
                 if (response.ok) {
-                    console.log(response);
                     alert('Kjo linje u fshi me sukses!');
                     getBusLines();
                 } else {
@@ -37,7 +36,9 @@ const BusLines = () => {
             });
     }
 
-    useEffect(getBusLines, []);
+    useEffect(() => {
+        getBusLines();
+    }, []);
 
     return (
         <div className="container mb-5">
@@ -50,7 +51,6 @@ const BusLines = () => {
                             <th scope='col'>Lokacioni i Nisjes</th>
                             <th scope='col'>Lokacioni i Mberritjes</th>
                             <th scope='col'>Kompania</th>
-                            <th scope='col'>Itinerari</th>
                             <th scope='col'>Numri i Uleseve</th>
                             <th scope='col'>Cmimi</th>
                             <th scope='col' colSpan='2' className='text-center'>Veprimet</th>
@@ -62,28 +62,19 @@ const BusLines = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {dbBusLines.map(dbBusLines => (
-                            <tr key={dbBusLines.id}>
-                                <td>{dbBusLines.id}</td>
-                                <td>{dbBusLines.departureCity}</td>
-                                <td>{dbBusLines.arrivalCityId}</td>
-                                <td>{dbBusLines.companyId}</td>
+                        {dbBusLines.map(dbBusLine => (
+                            <tr key={dbBusLine.id}>
+                                <td>{dbBusLine.id}</td>
+                                <td>{dbBusLine.departureCity ? dbBusLine.departureCity.locationName : 'N/A'}</td>
+                                <td>{dbBusLine.arrivalCity ? dbBusLine.arrivalCity.locationName : 'N/A'}</td>
+                                <td>{dbBusLine.company ? dbBusLine.company.name : 'N/A'}</td>
+                                <td>{dbBusLine.numberOfSeats}</td>
+                                <td>{dbBusLine.price}</td>
                                 <td>
-                                    {dbBusLines.busItineraries.map((itinerary, index) => (
-                                        <div key={index}>
-                                            <div>Departure Time: {itinerary.departureTime}</div>
-                                            <div>Arrival Time: {itinerary.arrivalTime}</div>
-                                            <hr />
-                                        </div>
-                                    ))}
-                                </td>
-                                <td>{dbBusLines.numberOfSeats}</td>
-                                <td>{dbBusLines.price}</td>
-                                <td>
-                                    <Link to={`/editBusLine/${dbBusLines.id}`} className='btn btn-outline-secondary btn-sm'>Edito</Link>
+                                    <Link to={`/editBusLine/${dbBusLine.id}`} className='btn btn-outline-secondary btn-sm'>Edito</Link>
                                 </td>
                                 <td>
-                                    <button type='button' className='btn btn-secondary btn-sm' onClick={() => { if (window.confirm(`A jeni i sigurt qe doni te fshini Lokacionin? "${dbBusLines.id}"? `)) deleteBusLines(dbBusLines.id) }}>Fshi</button>
+                                    <button type='button' className='btn btn-danger btn-sm' onClick={() => { if (window.confirm(`A jeni i sigurt qe doni te fshini Lokacionin? "${dbBusLine.id}"? `)) deleteBusLines(dbBusLine.id) }}>Fshi</button>
                                 </td>
                             </tr>
                         ))}
@@ -94,4 +85,4 @@ const BusLines = () => {
     );
 };
 
-export default <BusLines />;
+export default BusLines;

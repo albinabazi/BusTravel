@@ -44,7 +44,7 @@ const AddCompany = () => {
         };
 
 
-        const url = `https://localhost:3000/api/company/company`;
+        const url = `http://localhost:8086/companies`;
 
         fetch(url, {
             method: 'POST',
