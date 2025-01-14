@@ -2,60 +2,51 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 const Lines = () => {
-  const [dbLines, setdbLines] = useState([]); // Always an array
+  const [dbLines, setdbLines] = useState([]);
   const [dbLocation, setdbLocation] = useState([]);
   const [dbCompanies, setdbCompanies] = useState([]);
   const [selectedDepartureCity, setSelectedDepartureCity] = useState('');
   const [selectedArrivalCity, setSelectedArrivalCity] = useState('');
 
-  function getLines() {
+  const getLines = () => {
     const url = `http://localhost:8086/busLines`;
-    fetch(url, { method: 'GET' })
+    fetch(url)
       .then(response => response.json())
       .then(LinesFromServer => {
-        console.log(LinesFromServer);
-        if (Array.isArray(LinesFromServer)) {
-          setdbLines(LinesFromServer); // Ensure it is set to an array
-        } else {
-          setdbLines([]); // Fallback to empty array if not an array
-        }
+        setdbLines(LinesFromServer?.content || []);
       })
       .catch(error => {
-        console.log(error);
-        setdbLines([]); // Fallback on error
+        console.error(error);
+        setdbLines([]);
       });
-  }
+  };
 
-  function getLocations() {
+  const getLocations = () => {
     const url = `http://localhost:8086/locations`;
-    fetch(url, { method: 'GET' })
+    fetch(url)
       .then(response => response.json())
       .then(locationsFromServer => {
-        console.log(locationsFromServer);
-        if (Array.isArray(locationsFromServer)) {
-          setdbLocation(locationsFromServer); // Ensure it is set to an array
-        } else {
-          setdbLocation([]); // Fallback to empty array if not an array
-        }
+        setdbLocation(locationsFromServer?.content || []);
       })
       .catch(error => {
-        console.log(error);
-        setdbLocation([]); // Fallback on error
+        console.error(error);
+        setdbLocation([]);
       });
-  }
+  };
 
-  function getCompanies() {
+  const getCompanies = () => {
     const url = `http://localhost:8086/companies`;
-    fetch(url, { method: 'GET' })
+    fetch(url)
       .then(response => response.json())
       .then(companiesFromServer => {
         console.log(companiesFromServer);
-        setdbCompanies(companiesFromServer); // Set companies data
+        setdbCompanies(Array.isArray(companiesFromServer) ? companiesFromServer : []);
       })
       .catch(error => {
-        console.log(error);
+        console.error(error);
+        setdbCompanies([]);
       });
-  }
+  };
 
   useEffect(() => {
     getLines();
@@ -64,10 +55,10 @@ const Lines = () => {
   }, []);
 
   const filteredLines = dbLines.filter(dbLine => {
-    if (selectedDepartureCity && dbLine.departureCityId !== parseInt(selectedDepartureCity)) {
+    if (selectedDepartureCity && parseInt(selectedDepartureCity) !== dbLine.departureCity.id) {
       return false;
     }
-    if (selectedArrivalCity && dbLine.arrivalCityId !== parseInt(selectedArrivalCity)) {
+    if (selectedArrivalCity && parseInt(selectedArrivalCity) !== dbLine.arrivalCity.id) {
       return false;
     }
     return true;
@@ -75,7 +66,7 @@ const Lines = () => {
 
   return (
     <div className="container my-4">
-      <h3 className="text-center mb-4">Linjat</h3>
+      <h3 className="text-center my-4 mb-4" style={{fontFamily: 'Inter', color: '#0a4668'}}>Linjat</h3>
 
       <div className="row mb-4">
         <div className="col-md-5 mx-auto">
@@ -106,7 +97,7 @@ const Lines = () => {
             <select
               id="arrivalCity"
               className="form-select"
-              value={selectedArrivalCity} 
+              value={selectedArrivalCity}
               onChange={(e) => setSelectedArrivalCity(e.target.value)}
             >
               <option value="">Zgjedhni destinacionin</option>
@@ -138,35 +129,42 @@ const Lines = () => {
             </tr>
           </thead>
           <tbody>
-            {filteredLines.map(dbLine => {
-              const departureCity = dbLocation.find(location => location.id === dbLine.departureCityId);
-              const arrivalCity = dbLocation.find(location => location.id === dbLine.arrivalCityId);
-              const company = dbCompanies.find(company => company.id === dbLine.companyId);
+            {filteredLines.length > 0 ? (
+              filteredLines.map(dbLine => {
 
-              return (
-                <tr key={dbLine.id}>
-                  <td>{dbLine.id}</td>
-                  <td>{departureCity ? departureCity.locationName : ''}</td>
-                  <td>{arrivalCity ? arrivalCity.locationName : ''}</td>
-                  <td>{company ? company.name : ''}</td>
-                  <td>{dbLine.numberOfSeats}</td>
-                  <td>{dbLine.price} Euro</td>
-                  <td>
-                    {dbLine.busItineraries.map(itinerary => (
-                      <div key={itinerary.id} className="mb-2">
-                        <div>Nisja: {itinerary.departureTime}</div>
-                        <div>Mberritja: {itinerary.arrivalTime}</div>
-                        <div>Kohezgjatja: {itinerary.duration}</div>
-                        <Link to="/cardDetails">
-                          <button className="btn btn-primary mt-2">Rezervo</button>
-                        </Link>
-                        <hr />
-                      </div>
-                    ))}
-                  </td>
-                </tr>
-              );
-            })}
+                return (
+                  <tr key={dbLine.id}>
+                    <td>{dbLine.id}</td>
+                    <td>{dbLine.departureCity ? dbLine.departureCity.locationName : 'N/A'}</td>
+                    <td>{dbLine.arrivalCity ? dbLine.arrivalCity.locationName : 'N/A'}</td>
+                    <td>{dbLine.company ? dbLine.company.name : 'N/A'}</td>
+                    <td>{dbLine.numberOfSeats}</td>
+                    <td>{dbLine.price} Euro</td>
+                    <td>
+                      {Array.isArray(dbLine.busItineraries) && dbLine.busItineraries.length > 0 ? (
+                        dbLine.busItineraries.map(itinerary => (
+                          <div key={itinerary.id} className="mb-2">
+                            <div>Nisja: {itinerary.departureTime}</div>
+                            <div>Mberritja: {itinerary.arrivalTime}</div>
+                            <div>Kohezgjatja: {itinerary.duration}</div>
+                            <Link to="/cardDetails">
+                              <button className="btn btn-primary mt-2">Rezervo</button>
+                            </Link>
+                            <hr />
+                          </div>
+                        ))
+                      ) : (
+                        <div>No itineraries available</div>
+                      )}
+                    </td>
+                  </tr>
+                );
+              })
+            ) : (
+              <tr>
+                <td colSpan="7">No bus lines available</td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>

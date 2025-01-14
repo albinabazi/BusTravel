@@ -41,14 +41,18 @@ const Itinerary = () => {
     }
 
     const sortById = () => {
-        setSorted({ sorted: "", reversed: !sorted.reversed });
         const itineraryCopy = [...dbBusItinerary];
         itineraryCopy.sort((itineraryA, itineraryB) => {
             if (sorted.reversed) {
-                return itineraryA.busItineraryId - itineraryB.busItineraryId;
+                return itineraryA.id - itineraryB.id;
             }
-            return itineraryB.busItineraryId - itineraryA.busItineraryId;
+            return itineraryB.id - itineraryA.id;
         });
+
+        setSorted(prevState => ({
+            sorted: 'id',
+            reversed: !prevState.reversed,
+        }));
 
         setdbBusItinerary(itineraryCopy);
     };
@@ -66,7 +70,7 @@ const Itinerary = () => {
                             <th scope='col'>Koha e Nisjes</th>
                             <th scope='col'>Koha e Mberritjes</th>
                             <th scope='col'>Kohezgjatja</th>
-                            <th scope='col'>Linja</th>
+                         {/*<th scope='col'>Linja</th> */}
                             <th scope='col' colSpan='2' className='text-center'>
                                 <Link to='/addBusItinerary' className='btn btn-secondary'>Shto Itinerarin</Link>
                             </th>
@@ -82,7 +86,7 @@ const Itinerary = () => {
                                 <td>{dbBusItinerary.departureTime}</td>
                                 <td>{dbBusItinerary.arrivalTime}</td>
                                 <td>{dbBusItinerary.duration}</td>
-                                <td>{dbBusItinerary.busLine.id}</td>
+                                <td>{dbBusItinerary.busLine ? dbBusItinerary.busLine.id : 'N/A'}</td>
                                 <td>
                                     <Link to={`/editBusItinerary/${dbBusItinerary.id}`} className='btn btn-outline-secondary btn-sm'>Edito</Link>
                                 </td>
