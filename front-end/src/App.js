@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './App.css';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -42,8 +42,16 @@ import AuthDetails from './components/auth/AuthDetails';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { AuthProvider } from './components/AuthProvider';
 import PrivateRoute from './components/auth/PrivateRoute';
+import { generateToken, messaging } from './firebase';
+import { onMessage } from 'firebase/messaging';
 
 function App() {
+    useEffect(() => {
+        generateToken();
+        onMessage(messaging, (paylod) => {
+            console.log('Message received: ', paylod);
+        });
+    }, [])
 
     return (
         <div className="App">
