@@ -2,10 +2,8 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import {getFirestore} from "firebase/firestore";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import {getMessaging, getToken} from "firebase/messaging";
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyBwiA9Vw_NwWWht9TpJPsQWuodismuwYmo",
   authDomain: "bus-travel-cc3c4.firebaseapp.com",
@@ -20,3 +18,15 @@ const app = initializeApp(firebaseConfig);
 
 export const auth = getAuth(app);
 export const db= getFirestore(app);
+export const messaging = getMessaging(app);
+
+export const generateToken = async () => {
+  const permission = await Notification.requestPermission();
+  console.log(permission);
+  if(permission === "granted"){
+    const token = await getToken(messaging, {
+      vapidKey:"BMNRJFjdEzDO7sNgT2DO28CcOIWQcibvL86fOHRK2uKsI606O7COmJytnv_a0bsK3XQODQoOL7H1IJYnhmmfiDY",
+    });
+    console.log(token);
+  }
+};

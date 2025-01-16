@@ -86,7 +86,7 @@ const Itinerary = () => {
                                 <td>{dbBusItinerary.departureTime}</td>
                                 <td>{dbBusItinerary.arrivalTime}</td>
                                 <td>{dbBusItinerary.duration}</td>
-                                <td>{dbBusItinerary.busLine ? dbBusItinerary.busLine.id : 'N/A'}</td>
+                               {/* <td>{dbBusItinerary.busLine ? dbBusItinerary.busLine.id : 'N/A'}</td> */}
                                 <td>
                                     <Link to={`/editBusItinerary/${dbBusItinerary.id}`} className='btn btn-outline-secondary btn-sm'>Edito</Link>
                                 </td>
