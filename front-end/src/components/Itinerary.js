@@ -12,32 +12,35 @@ const Itinerary = () => {
         })
             .then(response => response.json())
             .then(busItinerarysFromServer => {
-                console.log(busItinerarysFromServer);
-                setdbBusItinerary(busItinerarysFromServer.content);
+               {/*  console.log("Fetched Data:", busItinerarysFromServer); // Check structure here
+                setdbBusItinerary(busItinerarysFromServer.content); */}
+                console.log("Updated State:", busItinerarysFromServer.content); // Verify updated state
             })
             .catch(error => {
-                console.log(error);
+                console.log("Fetch Error:", error);
             });
     }
+    
 
     function deleteBusItineraries(id) {
         const url = `http://localhost:8086/busItineraries/${id}`;
         fetch(url, {
             method: 'DELETE',
         })
-            .then(response => {
-                if (response.ok) {
-                    console.log(response);
-                    alert('Itinerari u fshi me sukses!');
-                    getBusItineraries();
-                } else {
-                    throw new Error('Failed to delete busItinerary.');
-                }
-            })
-            .catch(error => {
-                console.log(error);
-                alert('Ky Itinerar nuk mund te fshihet!');
-            });
+        .then(response => {
+            if (response.ok) {
+                console.log(response);
+                setdbBusItinerary(prevBusItineraries => {
+                    const updatedItineraries = prevBusItineraries.filter(busItinerary => busItinerary.id !== id);
+                    console.log('Updated Itineraries:', updatedItineraries);
+                    return updatedItineraries;
+                });
+                alert('Itinerari u fshi me sukses!');
+                getBusItineraries();
+            } else {
+                throw new Error('Failed to delete busItinerary.');
+            }
+        })
     }
 
     const sortById = () => {

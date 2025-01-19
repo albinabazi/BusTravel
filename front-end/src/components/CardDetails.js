@@ -1,25 +1,24 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 
-const CardDetails = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    surname: "",
-    creditCardNumber: "",
-    securityCode: "",
-    cardExpiration: "",
-  });
+const CardDetails = ({ amount }) => {
+  const navigate = useNavigate();
 
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]: value,
-    }));
+  useEffect(() => {
+
+  }, []);
+
+  const handleApprove = (data, actions) => {
+    return actions.order.capture().then((details) => {
+      console.log("Transaction completed by " + details.payer.name.given_name);
+      navigate("/thank-you");
+    });
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    console.log(formData);
+  const handleError = (err) => {
+    console.error("PayPal Checkout onError", err);
+    navigate("/thank-you");
   };
 
   return (
@@ -27,90 +26,34 @@ const CardDetails = () => {
       <div className="row justify-content-center align-items-center">
         <div className="col-md-6 bg-light p-4 rounded shadow">
           <h2 className="text-center text-grey mb-4">
-            Ju Lutem Vendosni të Dhënat e Kartelës
+            Ju Lutem Zgjidhni Metodën e Pagesës
           </h2>
-          <form onSubmit={handleSubmit} className="fs-5 w-50 center mx-auto">
-            <div className="mb-3">
-              <label htmlFor="name" className="form-label">
-                Emri
-              </label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                className="form-control"
-                placeholder="Shkruani emrin tuaj"
-                value={formData.name}
-                onChange={handleInputChange}
-                required
+          <div className="fs-5 w-50 center mx-auto">
+            <PayPalScriptProvider
+              options={{
+                "client-id": "AQzs1FRrp_2SuMPC2oMTNMLUQHmXzu79mRCQfpm1zWBoNQDJpWzSgs8gUp156mk8nJjQWDp3GfG9o1aO",
+                currency: "EUR",
+              }}
+            >
+              <PayPalButtons
+                createOrder={(data, actions) => {
+                  return actions.order.create({
+                    purchase_units: [
+                      {
+                        amount: {
+                          value: amount || "10.00",
+                        },
+                      },
+                    ],
+                  });
+                }}
+                onApprove={handleApprove}
+                onError={handleError}
               />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="surname" className="form-label">
-                Mbiemri
-              </label>
-              <input
-                type="text"
-                id="surname"
-                name="surname"
-                className="form-control"
-                placeholder="Shkruani mbiemrin tuaj"
-                value={formData.surname}
-                onChange={handleInputChange}
-                required
-              />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="creditCardNumber" className="form-label">
-                Numri i Kartelës
-              </label>
-              <input
-                type="text"
-                id="creditCardNumber"
-                name="creditCardNumber"
-                className="form-control"
-                placeholder="Shkruani numrin e kartelës"
-                value={formData.creditCardNumber}
-                onChange={handleInputChange}
-                required
-              />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="securityCode" className="form-label">
-                Kodi i Sigurisë
-              </label>
-              <input
-                type="text"
-                id="securityCode"
-                name="securityCode"
-                className="form-control"
-                placeholder="Shkruani kodin e sigurisë"
-                value={formData.securityCode}
-                onChange={handleInputChange}
-                required
-              />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="cardExpiration" className="form-label">
-                Data e Skadimit
-              </label>
-              <input
-                type="text"
-                id="cardExpiration"
-                name="cardExpiration"
-                className="form-control"
-                placeholder="MM/YY"
-                value={formData.cardExpiration}
-                onChange={handleInputChange}
-                required
-              />
-            </div>
-            <button type="submit" className="btn btn-primary w-100">
-              Paguaj
-            </button>
-          </form>
+            </PayPalScriptProvider>
+          </div>
         </div>
-        
+
         <div className="col-md-5 d-none d-md-block text-center">
           <img
             src="./images/karta.jpg"

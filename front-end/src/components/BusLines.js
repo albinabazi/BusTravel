@@ -24,6 +24,7 @@ const BusLines = () => {
         fetch(url, { method: 'DELETE' })
             .then(response => {
                 if (response.ok) {
+                    {/*setdbBusLines(prevBusLines => prevBusLines.filter(busLine => busLine.id !== id)); */}
                     alert('Kjo linje u fshi me sukses!');
                     getBusLines();
                 } else {
