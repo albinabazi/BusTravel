@@ -44,6 +44,7 @@ import { AuthProvider } from './components/AuthProvider';
 import PrivateRoute from './components/auth/PrivateRoute';
 import { generateToken, messaging } from './firebase';
 import { onMessage } from 'firebase/messaging';
+import ThankYou from './components/ThankYou';
 
 function App() {
     useEffect(() => {
@@ -99,6 +100,7 @@ function App() {
                             <Route path="dashboard" element={<AdminDashboard />} />
                         </Route>*/ }
                         <Route path='/dashboard' element={AdminDashboard} />
+                        <Route path="/thank-you" element={<ThankYou />} />
                     </Routes>
                     <Footer />
                 </Router>
