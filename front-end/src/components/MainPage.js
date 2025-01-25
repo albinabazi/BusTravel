@@ -3,6 +3,7 @@ import { HiOutlineTicket } from "react-icons/hi";
 import { FaBus } from "react-icons/fa";
 import { TiWeatherPartlySunny } from "react-icons/ti";
 import { Link } from "react-router-dom";
+import ChatApp from "../ChatApp";
 
 const MainPage = () => {
   
@@ -102,6 +103,7 @@ const MainPage = () => {
           className="row"
           style={{ display: "flex", justifyContent: "center" }}
         >
+          <ChatApp />
           <div
             className="col-md-4"
             style={{
