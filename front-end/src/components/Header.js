@@ -1,12 +1,8 @@
 import React from 'react';
 import logo from './logo.png';
 import { Link } from 'react-router-dom';
-import { useAuth } from './AuthProvider';
-import AuthDetails from './auth/AuthDetails';
 
 const Header = () => {
-    const { currentUser } = useAuth(); // Destructure currentUser directly from useAuth
-    const userRole = currentUser?.role;
 
     return (
         <header className="header-container" style={{ textDecoration: 'none !important', backgroundColor: '#323A44', padding: '10px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -32,14 +28,9 @@ const Header = () => {
                 <Link to="/allfeedbacks" style={{ textDecoration: 'none' }}>
                     <button style={{ cursor: 'pointer', border: 'none', backgroundColor: '#323A44', color: 'white', padding: '10px', fontSize: '17px', fontFamily: 'sans-serif', textDecoration: 'none' }}>Feedbacks</button>
                 </Link>
-                {userRole === 'Admin' && (
                     <Link to="/dashboard" style={{ textDecoration: 'none' }}>
                         <button style={{ cursor: 'pointer', border: 'none', backgroundColor: '#323A44', color: 'white', padding: '10px', fontSize: '17px', fontFamily: 'sans-serif', textDecoration: 'none' }}>Admin Dashboard</button>
                     </Link>
-                )}
-                {currentUser ? (
-                    <AuthDetails />
-                ) : (
                     <>
                         <Link to="/login" style={{ textDecoration: 'none' }}>
                             <button style={{ cursor: 'pointer', border: 'none', backgroundColor: '#323A44', color: 'white', padding: '10px', fontSize: '17px', fontFamily: 'sans-serif', textDecoration: 'none' }}>Kyçuni</button>
@@ -48,7 +39,7 @@ const Header = () => {
                             <button style={{ cursor: 'pointer', border: 'none', backgroundColor: '#323A44', color: 'white', padding: '10px', fontSize: '17px', fontFamily: 'sans-serif', textDecoration: 'none' }}>Regjistrohu</button>
                         </Link>
                     </>
-                )}
+                
             </div>
         </header>
     );

@@ -1,6 +1,5 @@
 package com.bustravel.user;
 
-import java.util.Set;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -33,10 +31,10 @@ public class UserController {
         return userService.findById(id);
     }
     
-    @GetMapping(path ="/users", params = "userName")
+   /*  @GetMapping(path ="/users", params = "userName")
     public Set<UserEntity> findByNameOrEmail(@RequestParam(name = "userName") String userName, @RequestParam(name="email", required= false) String email){
         return userService.findByNameOrEmail(userName, email);
-    }
+    } */
 
     @GetMapping(path ="/users")
     public Page<UserEntity> findAll(Pageable pageable){
@@ -75,4 +73,9 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(patched);
     }
 
+    @PostMapping("/register")
+    public ResponseEntity<String> registerUser(@RequestBody UserDto userDTO) {
+        String result = userService.registerUser(userDTO);
+        return ResponseEntity.ok(result);
+    }
 }
