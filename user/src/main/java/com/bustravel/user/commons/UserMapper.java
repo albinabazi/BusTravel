@@ -13,12 +13,20 @@ public class UserMapper {
             private String password;
          */
 
-         if(dto.getUserName() != null){
-            entity.setUserName(dto.getUserName());
-         }
+        // if(dto.getUserName() != null){
+        //    entity.setUserName(dto.getUserName());
+        // }
 
          if(dto.getEmail() !=null){
             entity.setEmail(dto.getEmail());
+         }
+
+         if(dto.getFirstName() !=null){
+            entity.setFirstName(dto.getFirstName());
+         }
+
+         if(dto.getLastName() !=null){
+            entity.setLastName(dto.getLastName());
          }
 
          if(dto.getPassword() !=null){
@@ -30,8 +38,10 @@ public class UserMapper {
         UserDto dto = new UserDto();
 
         dto.setId(entity.getId());
-        dto.setUserName(entity.getUserName());
+        //dto.setUserName(entity.getUserName());
         dto.setEmail(entity.getEmail());
+        dto.setFirstName(entity.getFirstName());
+        dto.setLastName(entity.getLastName());
         dto.setPassword(entity.getPassword());
        
         return dto;

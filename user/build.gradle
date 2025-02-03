@@ -30,8 +30,26 @@ dependencies {
 	implementation 'org.springframework.security:spring-security-config'
 	implementation 'org.springframework.security:spring-security-messaging'
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.keycloak:keycloak-admin-client:24.0.1' // Keycloak Admin API
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'org.projectlombok:lombok:1.18.30'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+	implementation 'io.jsonwebtoken:jjwt:0.12.6'
+	
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+compileJava {
+    options.compilerArgs += '-parameters'
+}
+
+tasks.withType(JavaCompile) {
+    options.compilerArgs << "-parameters"
 }

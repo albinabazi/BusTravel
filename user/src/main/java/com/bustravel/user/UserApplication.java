@@ -1,14 +1,13 @@
 package com.bustravel.user;
 
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.data.web.config.EnableSpringDataWebSupport;
-import org.springframework.data.web.config.EnableSpringDataWebSupport.PageSerializationMode;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
+import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration;
 
-@SpringBootApplication(scanBasePackages = "com.bustravel")
-@EnableSpringDataWebSupport(pageSerializationMode = PageSerializationMode.VIA_DTO)
-@EntityScan(basePackages = "com.bustravel.user")
+@SpringBootApplication
+@EnableAutoConfiguration(exclude = {SecurityAutoConfiguration.class, UserDetailsServiceAutoConfiguration.class})
 public class UserApplication {
 
 	public static void main(String[] args) {

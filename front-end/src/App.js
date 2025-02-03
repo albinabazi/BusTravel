@@ -38,10 +38,7 @@ import BusLines from './components/BusLines';
 import AddBusLines from './components/AddBusLines';
 import EditBusLines from './components/EditBusLines';
 import CardDetails from './components/CardDetails';
-import AuthDetails from './components/auth/AuthDetails';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { AuthProvider } from './components/AuthProvider';
-import PrivateRoute from './components/auth/PrivateRoute';
 import { generateToken, messaging } from './firebase';
 import { onMessage } from 'firebase/messaging';
 import ThankYou from './components/ThankYou';
@@ -56,7 +53,6 @@ function App() {
 
     return (
         <div className="App">
-            <AuthProvider>
                 <Router>
                     <Header />
                     <Routes>
@@ -95,16 +91,11 @@ function App() {
                         <Route path='/addBusLine' element={AddBusLines } />
                         <Route path="/editBusLine/:id" element={EditBusLines} />
                         <Route path='/cardDetails' element={<CardDetails />} />
-                        <Route path='/authDetails' element={<AuthDetails />} />
-                       {/* <Route path="/admin" element={<PrivateRoute />}>
-                            <Route path="dashboard" element={<AdminDashboard />} />
-                        </Route>*/ }
                         <Route path='/dashboard' element={AdminDashboard} />
                         <Route path="/thank-you" element={<ThankYou />} />
                     </Routes>
                     <Footer />
                 </Router>
-            </AuthProvider>
         </div>
     );
 }
