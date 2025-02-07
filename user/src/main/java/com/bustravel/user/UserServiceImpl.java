@@ -103,18 +103,28 @@ public class UserServiceImpl implements UserService{
         userEntity.setFirstName(userDTO.getFirstName());
         userEntity.setLastName(userDTO.getLastName());
         userEntity.setPassword(userDTO.getPassword());
+        userEntity.setRole("USER");
 
         userRepository.save(userEntity);  // Save to MySQL
 
         // Step 2: Register user in Keycloak
         try {
+            // Register user in Keycloak
             keycloakUserService.createUser(
                 userDTO.getEmail(), 
                 userDTO.getFirstName(), 
                 userDTO.getLastName(), 
                 userDTO.getPassword()
             );
-            return "User registered successfully in both MySQL and Keycloak!";
+
+            // Step 3: Assign the role to the user in Keycloak
+            String userId = keycloakUserService.getUserIdFromEmail(userDTO.getEmail());  // Get user ID from email
+            if (userId != null) {
+                keycloakUserService.assignRoleToUser(userId, "user", "bustravel");  // Assign 'user' role
+                return "User registered successfully in both MySQL and Keycloak!";
+            } else {
+                throw new RuntimeException("Failed to retrieve user ID from Keycloak.");
+            }
         } catch (Exception e) {
             return "User created in MySQL, but failed to register in Keycloak. Error: " + e.getMessage();
         }
