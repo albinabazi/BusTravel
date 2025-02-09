@@ -22,11 +22,11 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         
-        http.authorizeHttpRequests(customizer -> {
-            customizer
-                .requestMatchers("/users/**").hasRole("USER")
-                .anyRequest().authenticated();
-        });
+        // http.authorizeHttpRequests(customizer -> {
+        //     customizer
+        //         .requestMatchers("/users/**").hasRole("USER")
+        //         .anyRequest().authenticated();
+        // });
 
         http.oauth2ResourceServer(customizer -> {
             customizer.jwt(jwtCustomizer -> {

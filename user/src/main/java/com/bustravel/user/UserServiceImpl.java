@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -20,9 +21,12 @@ public class UserServiceImpl implements UserService{
     @Autowired
     private final KeycloakUserService keycloakUserService;
 
-    public UserServiceImpl(UserRepository userRepository, KeycloakUserService keycloakUserService) {
+    private PasswordEncoder passwordEncoder;
+
+    public UserServiceImpl(UserRepository userRepository, KeycloakUserService keycloakUserService, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.keycloakUserService = keycloakUserService;
+        this.passwordEncoder=passwordEncoder;
     }
 
     @Override
@@ -102,7 +106,7 @@ public class UserServiceImpl implements UserService{
         userEntity.setEmail(userDTO.getEmail());
         userEntity.setFirstName(userDTO.getFirstName());
         userEntity.setLastName(userDTO.getLastName());
-        userEntity.setPassword(userDTO.getPassword());
+        userEntity.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         userEntity.setRole("USER");
 
         userRepository.save(userEntity);  // Save to MySQL

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import './App.css';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -42,6 +42,9 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { generateToken, messaging } from './firebase';
 import { onMessage } from 'firebase/messaging';
 import ThankYou from './components/ThankYou';
+import ProtectedRoute from './components/auth/ProtectedRoute';
+import Logout from './components/auth/Logout';
+import { AuthProvider } from './components/auth/AuthContext';
 
 function App() {
     useEffect(() => {
@@ -53,7 +56,8 @@ function App() {
 
     return (
         <div className="App">
-                <Router>
+            <Router>
+                <AuthProvider>
                     <Header />
                     <Routes>
                         <Route path="/" element={<MainPage />} />
@@ -91,11 +95,13 @@ function App() {
                         <Route path='/addBusLine' element={AddBusLines } />
                         <Route path="/editBusLine/:id" element={EditBusLines} />
                         <Route path='/cardDetails' element={<CardDetails />} />
-                        <Route path='/dashboard' element={AdminDashboard} />
+                        <Route path='/dashboard' element={<ProtectedRoute element={AdminDashboard} allowedRoles={["ADMIN"]} />} />
                         <Route path="/thank-you" element={<ThankYou />} />
+                        <Route path="/logout" element={<Logout />} />
                     </Routes>
                     <Footer />
-                </Router>
+                </AuthProvider>
+            </Router>
         </div>
     );
 }

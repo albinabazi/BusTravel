@@ -1,46 +1,46 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { useNavigate } from "react-router-dom";
+import React, { useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from './AuthContext';
+import { jwtDecode } from 'jwt-decode';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  
+  const { login } = useContext(AuthContext);
   const navigate = useNavigate();
-
-  const login = async (email, password) => {
-    try {
-      const response = await axios.post('http://localhost:8087/login', {
-        email,
-        password,
-      }, {
-        headers: {
-          Authorization: `Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJvUGp4QUVFM3pqbU5KeHR3TGxWeWRGanZmVzFkdjlQdGpCR0Nyd3ZtVkVjIn0.eyJleHAiOjE3Mzg1MzYyMjcsImlhdCI6MTczODUzNDQyNywianRpIjoiNDgxODY3MzQtYjQ5YS00MzU0LTkxMGItOTc4YTQ3NjBjZmVkIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL3JlYWxtcy9idXN0cmF2ZWwiLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiMDkwNWMwNDItZWQwZC00NDJiLWFjNDUtNDlkMmJlMjI1MGI2IiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiYnVzdHJhdmVsIiwic2Vzc2lvbl9zdGF0ZSI6IjI2NzdjODc1LTFmMmMtNDAwOC05OWEzLWQ4YmYwODk3Nzk1NSIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiKiJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsiZGVmYXVsdC1yb2xlcy1idXN0cmF2ZWwiLCJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYnVzdHJhdmVsIjp7InJvbGVzIjpbImFkbWluIiwidXNlciJdfSwiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJwcm9maWxlIGVtYWlsIiwic2lkIjoiMjY3N2M4NzUtMWYyYy00MDA4LTk5YTMtZDhiZjA4OTc3OTU1IiwiZW1haWxfdmVyaWZpZWQiOnRydWUsIm5hbWUiOiJEaWVsbHphIE5lemlyaSIsInByZWZlcnJlZF91c2VybmFtZSI6ImRuNTE4MzVAdWJ0LXVuaS5uZXQiLCJnaXZlbl9uYW1lIjoiRGllbGx6YSIsImZhbWlseV9uYW1lIjoiTmV6aXJpIiwiZW1haWwiOiJkbjUxODM1QHVidC11bmkubmV0In0.eTVYhNpKQDtk277a_vp_z2KvsvSbpyt37Ike4nFbHLuEjDgI8SNay6hApjaOz9gwohPzEJ_5iP0PPT-EwsLuTXwwv8wMXbd4kPVdITLK9USNMvC4MSqtgGLkDV7wkQwybnOiQwXI5W1oM8u8Ii9xjNBDDYTMS6e_w7R6IPbCD3ZQfRC1WRc_qNtoINyPy-w37NFvtF6ff1_k_3S4Sdvo8iArLMOA8QQdshY5rYkRaClbjCdd4xBzZVwoq2JAzrgfEhFJ7TEP7DQq-6inDcG5L28Ou7WX94SReoHJN6yGPZyRPDtCsRU9nSEVYummUE61-nQAJQ7eoKul0YoHepIGew`
-      }
-      });
-      
-      if (response.status === 200) {
-        localStorage.setItem('token', response.data.token);
-        alert('Login successful');
-        navigate('/home');
-      }
-    } catch (error) {
-      console.error('Error logging in:', error);
-      if (error.response) {
-        setError('Invalid credentials or server error.');
-      } else {
-        setError('Network error. Please try again.');
-      }
-    }
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(''); // Reset error message before attempting login
+    setError('');
+
     try {
-      await login(email, password);
-    } catch (error) {
-      console.error('Error logging in:', error);
+      const response = await fetch('http://localhost:8087/authenticate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Invalid credentials');
+      }
+
+      const token = await response.text();
+      localStorage.setItem('jwt', token);
+
+      const decodedToken = jwtDecode(token);
+      const role = decodedToken.role;
+
+      console.log("Decoded role:", role);
+
+      localStorage.setItem('role', role);
+      login(token, role);
+      navigate('/');
+    } catch (err) {
+      setError(err.message);
     }
   };
 
