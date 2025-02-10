@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect } from 'react';
 import './App.css';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -63,41 +63,45 @@ function App() {
                         <Route path="/" element={<MainPage />} />
                         <Route path="/login" element={<Login />} />
                         <Route path="/register" element={<Register />} />
-                        <Route path="/passengerDetails" element={<PassengerDetails />} />
-                        <Route path="/tabela" element={<Tabela />} />
-                        <Route path='/weather' element={<Moti />} />
-                        <Route path='/feedbackpage' element={FeedbackPage } />
-                        <Route path="/AddFeedback" element={AddFeedback} />
-                        <Route path="/Feedback" element={<Feedback/>} />
-                        <Route path="/editFeedback/:id" element={<EditFeedback />} />
-                        <Route path="/AllFeedbacks" element={AllFeedbacks} />
-                        <Route path="/paymentMethods" element={<PaymentMethods />} />
-                        <Route path="/lines" element={<LinesPage />} />
-                        <Route path="/lines/:id" element={<RouteDetailsPage />} />
-                        <Route path="/rekomandimet" element={Rekomandimet } />
-                        <Route path="/recommendationFerizaj" element={RecommendationFerizaj } />
-                        <Route path="/recommendationPrizren" element={RecommendationPrizren } />
-                        <Route path="/recommendationPrishtina" element={RecommendationPrishtina } />
-                        <Route path="/recommendationGjilan" element={RecommendationGjilan } />
-                        <Route path="/recommendationPeje" element={RecommendationPeje } />
-                        <Route path="/recommendationGjakove" element={RecommendationGjakove} />
-                        <Route path="/recommendationMitrovice" element={RecommendationMitrovica} />
-                        <Route path='/location' element={<Location />} />
-                        <Route path='/addLocation' element={AddLocation } />
-                        <Route path='/editLocation/:id' element={<EditLocation />} />
-                        <Route path='/company' element={Company } />
-                        <Route path='/addCompany' element={AddCompany } />
-                        <Route path='/editCompany/:id' element={<EditCompany />} />
-                        <Route path='/busItinerary' element={Itinerary } />
-                        <Route path='/addBusItinerary' element={AddItinerary } />
-                        <Route path='/editBusItinerary/:id' element={EditItinerary} />
-                        <Route path='/busLines' element={<BusLines />} />
-                        <Route path='/addBusLine' element={AddBusLines } />
-                        <Route path="/editBusLine/:id" element={EditBusLines} />
-                        <Route path='/cardDetails' element={<CardDetails />} />
-                        <Route path='/dashboard' element={<ProtectedRoute element={AdminDashboard} allowedRoles={["ADMIN"]} />} />
-                        <Route path="/thank-you" element={<ThankYou />} />
                         <Route path="/logout" element={<Logout />} />
+
+                        {/*User routes */}
+                        <Route path="/passengerDetails" element={<ProtectedRoute element={<PassengerDetails />} />} />
+                        <Route path="/tabela" element={<ProtectedRoute element={<Tabela />} />} />
+                        <Route path="/weather" element={<ProtectedRoute element={<Moti />} />} />
+                        <Route path='/feedbackpage' element={<ProtectedRoute element={FeedbackPage } />} />
+                        <Route path="/AllFeedbacks" element={<ProtectedRoute element={AllFeedbacks} />} />
+                        <Route path="/paymentMethods" element={<ProtectedRoute element={<PaymentMethods />} />} />
+                        <Route path="/lines" element={<ProtectedRoute element={<LinesPage />} />} />
+                        <Route path="/lines/:id" element={<ProtectedRoute element={<RouteDetailsPage />} />} />
+                        <Route path="/rekomandimet" element={<ProtectedRoute element={Rekomandimet } />} />
+                        <Route path="/recommendationFerizaj" element={<ProtectedRoute element={RecommendationFerizaj } />} />
+                        <Route path="/recommendationPrizren" element={<ProtectedRoute element={RecommendationPrizren } />} />
+                        <Route path="/recommendationPrishtina" element={<ProtectedRoute element={RecommendationPrishtina } />} />
+                        <Route path="/recommendationGjilan" element={<ProtectedRoute element={RecommendationGjilan } />} />
+                        <Route path="/recommendationPeje" element={<ProtectedRoute element={RecommendationPeje } />} />
+                        <Route path="/recommendationGjakove" element={<ProtectedRoute element={RecommendationGjakove} />} />
+                        <Route path="/recommendationMitrovice" element={<ProtectedRoute element={RecommendationMitrovica} />} />
+                        <Route path="/thank-you" element={<ProtectedRoute element={<ThankYou />} />} />
+                        
+                        {/*Admin routes */}
+                        <Route path="/AddFeedback" element={<ProtectedRoute element={AddFeedback} allowedRoles={["ADMIN"]} />} />
+                        <Route path="/Feedback" element={<ProtectedRoute element={<Feedback/>} allowedRoles={["ADMIN"]} />} />
+                        <Route path="/editFeedback/:id" element={<ProtectedRoute element={<EditFeedback />} allowedRoles={["ADMIN"]} />} />
+                        <Route path='/location' element={<ProtectedRoute element={<Location />} allowedRoles={["ADMIN"]} />} />
+                        <Route path='/addLocation' element={<ProtectedRoute element={AddLocation } allowedRoles={["ADMIN"]} />} />
+                        <Route path='/editLocation/:id' element={<ProtectedRoute element={<EditLocation />} allowedRoles={["ADMIN"]} />} />
+                        <Route path='/company' element={<ProtectedRoute element={Company } allowedRoles={["ADMIN"]} />} />
+                        <Route path='/addCompany' element={<ProtectedRoute element={AddCompany } allowedRoles={["ADMIN"]} />} />
+                        <Route path='/editCompany/:id' element={<ProtectedRoute element={<EditCompany />} allowedRoles={["ADMIN"]} />} />
+                        <Route path='/busItinerary' element={<ProtectedRoute element={Itinerary } allowedRoles={["ADMIN"]} />} />
+                        <Route path='/addBusItinerary' element={<ProtectedRoute element={AddItinerary } allowedRoles={["ADMIN"]} />} />
+                        <Route path='/editBusItinerary/:id' element={<ProtectedRoute element={EditItinerary} allowedRoles={["ADMIN"]} />} />
+                        <Route path='/busLines' element={<ProtectedRoute element={<BusLines />} allowedRoles={["ADMIN"]} />} />
+                        <Route path='/addBusLine' element={<ProtectedRoute element={AddBusLines } allowedRoles={["ADMIN"]} />} />
+                        <Route path="/editBusLine/:id" element={<ProtectedRoute element={EditBusLines} allowedRoles={["ADMIN"]} />} />
+                        <Route path='/cardDetails' element={<ProtectedRoute element={<CardDetails />} />} />
+                        <Route path='/dashboard' element={<ProtectedRoute element={AdminDashboard} allowedRoles={["ADMIN"]} />} />
                     </Routes>
                     <Footer />
                 </AuthProvider>

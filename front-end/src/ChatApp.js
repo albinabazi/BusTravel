@@ -12,21 +12,30 @@ function ChatApp() {
 
   useEffect(() => {
     const webSocket = new WebSocket('ws://localhost:8087/chat');
-  
-    webSocket.onopen = () => console.log('WebSocket connection established');
+
+    webSocket.onopen = () => console.log('✅ WebSocket connection established');
+    
     webSocket.onmessage = (event) => {
-      const message = JSON.parse(event.data);
-      setMessages((prevMessages) => [...prevMessages, message]);
+        try {
+            const message = JSON.parse(event.data);
+            console.log('📩 Received message:', message);
+            setMessages((prevMessages) => [...prevMessages, message]);
+        } catch (error) {
+            console.error('❌ Error parsing WebSocket message:', error);
+        }
     };
-    webSocket.onerror = (error) => console.error('WebSocket error:', error);
-    webSocket.onclose = () => console.log('WebSocket connection closed');
-  
+
+    webSocket.onerror = (error) => console.error('❌ WebSocket error:', error);
+    
+    webSocket.onclose = (event) => console.log('🔴 WebSocket connection closed', event);
+
     setSocket(webSocket);
-  
+
     return () => {
-      webSocket.close();
+        console.log('🛑 Closing WebSocket connection');
+        webSocket.close();
     };
-  }, []);  
+  }, []);
 
   const sendMessage = (message) => {
     if (socket && socket.readyState === WebSocket.OPEN) {
