@@ -1,7 +1,8 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from './AuthContext';
 import { jwtDecode } from 'jwt-decode';
+import logo from "../logo.png";
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -10,6 +11,14 @@ const LoginPage = () => {
   
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (Notification.permission !== "granted") {
+      Notification.requestPermission().then((permission) => {
+        console.log("Notification permission:", permission);
+      });
+    }
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -39,6 +48,13 @@ const LoginPage = () => {
       localStorage.setItem('role', role);
       login(token, role);
       navigate('/');
+
+      if (Notification.permission === "granted") {
+        new Notification("Welcome!", {
+          body: `Hello ${email}, you have successfully logged in! 🎉`,
+          icon: logo,
+        });
+      }
     } catch (err) {
       setError(err.message);
     }
