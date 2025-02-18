@@ -22,34 +22,32 @@ function AddBusLines() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
+    
         const busLineToAdd = {
-            departureCity: { id: formData.departureCityId },
-            arrivalCity: { id: formData.arrivalCityId },
-            company: { id: formData.companyId },
-            numberOfSeats: formData.numberOfSeats,
-            price: formData.price
+            departureCity: { id: Number(formData.departureCityId) },
+            arrivalCity: { id: Number(formData.arrivalCityId) },
+            company: { id: Number(formData.companyId) },
+            numberOfSeats: Number(formData.numberOfSeats),
+            price: Number(formData.price)
         };
-
-        const url = `http://localhost:8086/busLines`;
-
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+    
+        console.log("Sending data:", JSON.stringify(busLineToAdd, null, 2));
+    
+        fetch("http://localhost:8086/busLines", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify(busLineToAdd)
         })
-            .then(response => response.json())
-            .then(responseFromServer => {
-                console.log(responseFromServer);
-                alert('Linja u shtua me sukses!');
-                navigate('/busLines');
-            })
-            .catch(error => {
-                console.log(error);
-            });
-    };
+        .then(response => response.json())
+        .then(responseFromServer => {
+            console.log("Server Response:", responseFromServer);
+            alert("Linja u shtua me sukses!");
+            navigate("/busLines");
+        })
+        .catch(error => {
+            console.error("Error:", error);
+        });
+    };    
 
     return (
         <div className="addLine" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>

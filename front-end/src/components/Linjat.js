@@ -13,6 +13,7 @@ const Lines = () => {
     fetch(url)
       .then(response => response.json())
       .then(LinesFromServer => {
+        console.log('Lines from server:', LinesFromServer);
         setdbLines(LinesFromServer?.content || []);
       })
       .catch(error => {

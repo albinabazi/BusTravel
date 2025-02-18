@@ -3,12 +3,14 @@ package com.bustravel.busRoute.entities;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -45,7 +47,7 @@ public class BusLine {
     
     private Double price;
 
-    @OneToMany(mappedBy = "busLine", cascade = CascadeType.ALL, orphanRemoval = true, fetch = jakarta.persistence.FetchType.EAGER)
+    @OneToMany(mappedBy = "busLine", fetch = FetchType.EAGER)
     @JsonManagedReference
     private Set<BusItinerary> busItineraries  = new HashSet<>();
 

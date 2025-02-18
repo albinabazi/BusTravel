@@ -7,5 +7,5 @@ import com.bustravel.busRoute.entities.BusLine;
 
 @Repository
 public interface BusLineRepository extends JpaRepository<BusLine, Integer> {
-    
+    void deleteById(Integer id);
 }
