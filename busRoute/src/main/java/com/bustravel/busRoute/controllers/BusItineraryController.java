@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -62,7 +63,13 @@ public class BusItineraryController {
     }
 
     @DeleteMapping(path= "/busItineraries/{id}")
-    public void deleteBusItinerary(@PathVariable(name= "id") Integer id) {
-        busItineraryService.deleteBusItinerary(id);
+    public ResponseEntity<?> deleteBusItinerary(@PathVariable(name = "id") Integer id) {
+        try {
+            busItineraryService.deleteBusItinerary(id);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body("Failed to delete itinerary: " + e.getMessage());
+        }
     }
 }

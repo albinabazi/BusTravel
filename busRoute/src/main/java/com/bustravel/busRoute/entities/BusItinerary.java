@@ -1,8 +1,8 @@
 package com.bustravel.busRoute.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -27,7 +27,7 @@ public class BusItinerary {
 
     @ManyToOne
     @JoinColumn(name= "bus_line_id")
-    @JsonIgnore
+    @JsonBackReference
     private BusLine busLine;
 
     public Integer getId() {
