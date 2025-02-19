@@ -45,6 +45,7 @@ import ThankYou from './components/ThankYou';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import Logout from './components/auth/Logout';
 import { AuthProvider } from './components/auth/AuthContext';
+import LoginRequiredPage from './components/auth/LoginRequiredPage ';
 
 function App() {
     useEffect(() => {
@@ -64,6 +65,7 @@ function App() {
                         <Route path="/login" element={<Login />} />
                         <Route path="/register" element={<Register />} />
                         <Route path="/logout" element={<Logout />} />
+                        <Route path="/login-required" element={<LoginRequiredPage />} />
 
                         {/*User routes */}
                         <Route path="/passengerDetails" element={<ProtectedRoute element={<PassengerDetails />} />} />
@@ -72,7 +74,7 @@ function App() {
                         <Route path='/feedbackpage' element={<ProtectedRoute element={FeedbackPage } />} />
                         <Route path="/AllFeedbacks" element={<ProtectedRoute element={AllFeedbacks} />} />
                         <Route path="/paymentMethods" element={<ProtectedRoute element={<PaymentMethods />} />} />
-                        <Route path="/lines" element={<ProtectedRoute element={<LinesPage />} />} />
+                        <Route path="/lines" element={<ProtectedRoute element={<LinesPage />} allowedRoles={['ADMIN', 'USER']} />} />
                         <Route path="/lines/:id" element={<ProtectedRoute element={<RouteDetailsPage />} />} />
                         <Route path="/rekomandimet" element={<ProtectedRoute element={Rekomandimet } />} />
                         <Route path="/recommendationFerizaj" element={<ProtectedRoute element={RecommendationFerizaj } />} />
