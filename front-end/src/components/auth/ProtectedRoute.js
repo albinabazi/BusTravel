@@ -1,12 +1,13 @@
 import { Navigate } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "./AuthContext";
+import LoginRequiredPage from "./LoginRequiredPage ";
 
 const ProtectedRoute = ({ element, allowedRoles }) => {
     const { user } = useContext(AuthContext);
     
     if (user === null) {
-        return <div>Loading...</div>; 
+        return <LoginRequiredPage />;
     }
 
     if (!user) {
