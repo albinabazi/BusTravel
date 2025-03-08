@@ -46,6 +46,9 @@ import ProtectedRoute from './components/auth/ProtectedRoute';
 import Logout from './components/auth/Logout';
 import { AuthProvider } from './components/auth/AuthContext';
 import LoginRequiredPage from './components/auth/LoginRequiredPage ';
+import Eventi from './components/mbrojte/Eventi';
+import Festivali from './components/mbrojte/Festivali';
+import Events from './components/mbrojte/Eventi';
 
 function App() {
     useEffect(() => {
@@ -66,6 +69,8 @@ function App() {
                         <Route path="/register" element={<Register />} />
                         <Route path="/logout" element={<Logout />} />
                         <Route path="/login-required" element={<LoginRequiredPage />} />
+                        <Route path="/festivali" element={<Festivali />} />
+                        <Route path="/eventi" element={<Events />} />
 
                         {/*User routes */}
                         <Route path="/passengerDetails" element={<ProtectedRoute element={<PassengerDetails />} />} />
