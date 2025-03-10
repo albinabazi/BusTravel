@@ -38,9 +38,10 @@ public class EventiController {
         return ResponseEntity.status(HttpStatus.CREATED).body(eventi);
     }
 
-    @GetMapping("/filtered")
-    public ResponseEntity<List<Eventi>> getEventsByFestival(@RequestParam("festivalId") Integer festivalId) {
+    @GetMapping("/festival/{festivalId}")
+    public ResponseEntity<List<Eventi>> getEventsByFestival(@PathVariable(name = "festivalId") Integer festivalId) {
         List<Eventi> eventi = eventiService.getEventsByFestival(festivalId);
         return ResponseEntity.ok(eventi);
     }
+
 }

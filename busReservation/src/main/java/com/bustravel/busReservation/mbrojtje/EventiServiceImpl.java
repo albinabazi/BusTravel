@@ -39,6 +39,6 @@ public class EventiServiceImpl implements EventiService{
 
     @Override
     public List<Eventi> getEventsByFestival(Integer festivalId) {
-        return eventiRepository.findByFestivaliId(festivalId);
+        return eventiRepository.findEventsByFestival(festivalId);
     }   
 }
