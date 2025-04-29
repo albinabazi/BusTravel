@@ -71,6 +71,7 @@ function App() {
                         <Route path="/login-required" element={<LoginRequiredPage />} />
                         <Route path="/festivali" element={<Festivali />} />
                         <Route path="/eventi" element={<Events />} />
+                        <Route path="/grupi" element={<Grupi />} />
 
                         {/*User routes */}
                         <Route path="/passengerDetails" element={<ProtectedRoute element={<PassengerDetails />} />} />
