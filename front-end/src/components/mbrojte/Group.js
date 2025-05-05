@@ -3,7 +3,7 @@ import axios from "axios";
 
 const Grupi = () => {
   const [festivals, setFestivals] = useState([]);
-  const [form, setForm] = useState({ groupname: "", description: "" });
+  const [form, setForm] = useState({ groupname: "", description: "", isActive: false });
   const [editFestival, setEditFestival] = useState(null);
 
   // Fetch Festivals
@@ -13,15 +13,18 @@ const Grupi = () => {
       .catch(err => console.error("Error fetching festivals:", err));
   }, []);
 
-  // Handle Input Change (Add/Edit)
-  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+  // Handle Input Change
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm({ ...form, [name]: value });
+  };
 
   // Add Festival
   const handleAddFestival = async () => {
     try {
       const res = await axios.post("http://localhost:8085/grupi", form);
       setFestivals([...festivals, res.data]);
-      setForm({ groupname: "", description: "" }); // Reset form
+      setForm({ groupname: "", description: "", isActive: false }); // Reset form
     } catch (err) {
       console.error("Error adding festival:", err);
     }
@@ -55,27 +58,55 @@ const Grupi = () => {
       {/* Add/Edit Form */}
       <div className="card bg-secondary mb-4">
         <div className="card-body text-center">
-            <h4>{editFestival ? "Edit Group" : "Add Group"}</h4>
-            {["groupname", "description"].map(field => (
+          <h4>{editFestival ? "Edit Group" : "Add Group"}</h4>
+
+          {["groupname", "description"].map(field => (
             <div key={field} className="mb-3 d-flex justify-content-center">
-                <label className="form-label">{field === "groupname" ? "Group Name" : "description"}</label>
-                <input
+              <label className="form-label">{field === "groupname" ? "Group Name" : "Description"}</label>
+              <input
                 type="text"
                 className="form-control form-control-sm w-50 text-center"
                 name={field}
                 value={editFestival ? editFestival[field] : form[field]}
-                onChange={editFestival ? (e) => setEditFestival({ ...editFestival, [field]: e.target.value }) : handleChange}
+                onChange={editFestival
+                  ? (e) => setEditFestival({ ...editFestival, [field]: e.target.value })
+                  : handleChange}
                 required
-                />
+              />
             </div>
-            ))}
-            <button className={`btn ${editFestival ? "btn-warning" : "btn-primary"}`} onClick={editFestival ? handleEditFestival : handleAddFestival}>
-            {editFestival ? "Save Changes" : "Add Group"}
-            </button>
-            {editFestival && <button className="btn btn-secondary ms-2" onClick={() => setEditFestival(null)}>Cancel</button>}
-        </div>
-        </div>
+          ))}
 
+          {/* isActive Checkbox */}
+          <div className="mb-3 d-flex justify-content-center align-items-center gap-2">
+            <label className="form-label mb-0">Is Active</label>
+            <input
+              type="checkbox"
+              className="form-check-input"
+              name="isActive"
+              checked={editFestival ? editFestival.isActive : form.isActive}
+              onChange={(e) => {
+                const value = e.target.checked;
+                editFestival
+                  ? setEditFestival({ ...editFestival, isActive: value })
+                  : setForm({ ...form, isActive: value });
+              }}
+            />
+          </div>
+
+          <button
+            className={`btn ${editFestival ? "btn-warning" : "btn-primary"}`}
+            onClick={editFestival ? handleEditFestival : handleAddFestival}
+          >
+            {editFestival ? "Save Changes" : "Add Group"}
+          </button>
+
+          {editFestival && (
+            <button className="btn btn-secondary ms-2" onClick={() => setEditFestival(null)}>
+              Cancel
+            </button>
+          )}
+        </div>
+      </div>
 
       {/* Festivals Table */}
       <div className="table-responsive">
@@ -83,23 +114,35 @@ const Grupi = () => {
           <thead>
             <tr>
               <th>Group Name</th>
-              <th>description</th>
+              <th>Description</th>
+              <th>Is Active</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-            {festivals.length ? festivals.map(({ id, groupname, description }) => (
-              <tr key={id}>
-                <td>{groupname}</td>
-                <td>{description}</td>
+            {festivals.length ? festivals.map((f) => (
+              <tr key={f.id}>
+                <td>{f.groupname}</td>
+                <td>{f.description}</td>
+                <td>{f.isActive ? "Active" : "Inactive"}</td>
                 <td>
-                  <button className="btn btn-sm btn-info me-2" onClick={() => setEditFestival({ id, groupname, description })}>Edit</button>
-                  <button className="btn btn-sm btn-danger" onClick={() => handleDeleteFestival(id)}>Delete</button>
+                  <button
+                    className="btn btn-sm btn-info me-2"
+                    onClick={() => setEditFestival({ ...f })}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    className="btn btn-sm btn-danger"
+                    onClick={() => handleDeleteFestival(f.id)}
+                  >
+                    Delete
+                  </button>
                 </td>
               </tr>
             )) : (
               <tr>
-                <td colSpan="3" className="text-center">No festivals available.</td>
+                <td colSpan="4" className="text-center">No festivals available.</td>
               </tr>
             )}
           </tbody>

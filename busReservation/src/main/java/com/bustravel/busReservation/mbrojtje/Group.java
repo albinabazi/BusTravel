@@ -1,5 +1,6 @@
 package com.bustravel.busReservation.mbrojtje;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,6 +16,8 @@ public class Group {
 
     private String groupname;
     private String description;
+    @Column(name = "is_active")
+    private Boolean isActive;
 
     public Integer getId() {
         return id;
@@ -35,5 +38,12 @@ public class Group {
         this.description = description;
     }
 
+    public Boolean getIsActive() {
+        return isActive != null ? isActive : false;
+    }
+
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
+    }
     
 }

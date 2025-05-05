@@ -49,6 +49,7 @@ import LoginRequiredPage from './components/auth/LoginRequiredPage ';
 import Eventi from './components/mbrojte/Eventi';
 import Festivali from './components/mbrojte/Festivali';
 import Events from './components/mbrojte/Eventi';
+import Grupi from './components/mbrojte/Group';
 
 function App() {
     useEffect(() => {
